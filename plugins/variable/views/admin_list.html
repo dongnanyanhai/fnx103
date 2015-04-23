@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="{ADMIN_THEME}images/reset.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/system.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/dialog.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/main.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/switchbox.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/table_form.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="{ADMIN_THEME}js/jquery.min.js"></script>
+<script language="javascript" src="{ADMIN_THEME}js/core.js"></script>
+<style>
+td a:hover{text-decoration: none;}
+</style>
+<title>后台管理</title>
+</head>
+<body style="font-weight: normal;">
+<div class="subnav">
+
+<div class="content-menu ib-a blue line-x">
+<a href="{purl('admin/index')}" class="on"><em>变量列表</em></a><span>|</span>
+<a href='javascript:;' onClick="openwin('{purl('admin/add')}','clz','变量管理',500,180)"><em>添加变量</em></a><span>|</span>
+<a href="javascript:;" onClick="if(confirm('确定更新吗？')) cache();"><em>更新缓存</em></a><span>|</span>
+</div>
+<div class="bk10"></div>
+<div class="explain-col">变量命名要规范，变量自动添加 var_ 前缀以区分系统变量；模板调用{ $var_变量名称 }；如果遇到网站崩溃，可删除config/variable.ini.php文件，然后检查输入的变量是否出错；</div>
+<div class="bk10"></div>
+<div class="table-list">
+<form action="" method="post">
+<table width="100%">
+	<thead>
+	<tr>
+		<th width="50" align="center">ID</th>
+		<th width="150" align="center">变量名称</th>
+		<th width="100" align="center">变量类型</th>
+		<th width="300" align="left">变量值</th>
+		<th align="left">变量说明</th>
+		<th width="150" align="center">管理操作</th>
+	</tr>
+    </thead>
+    <tbody>
+    {loop $data $t}
+	<tr height="25">
+	  <td align="center">{$t['id']}</td>
+	  <td align="center"><a href="javascript:;" onclick="openwin('{purl('admin/edit/',array('id'=>$t[id]))}','clz','',500,180)">{$t['name']}</a></td>
+	  <td align="center">{$t['type']}</td>
+	  <td align="left">{$t['content']}</td>
+	  <td align="left">{$t['info']}</td>
+	  <td align="center">
+      <a href="javascript:;" onclick="openwin('{purl('admin/edit/',array('id'=>$t[id]))}','clz','',500,180)">修改</a> | 
+      <a href="javascript:;" onClick="if(confirm('确定删除吗？')) del('{purl('admin/del/',array('id'=>$t['id']))}');">删除</a>
+      </td>
+	  </tr>
+    {/loop}
+	  </tbody>
+</table>
+
+</form>
+</div>
+</div>
+<script language="javascript">
+$(function(){
+	window.top.art.dialog({id:'clz'}).close();
+})
+function setC() {
+	if($("#deletec").attr('checked')) {
+		$(".deletec").attr("checked",true);
+	} else {
+		$(".deletec").attr("checked",false);
+	}
+}
+function del(url){
+	var data,url;
+	$.ajax({
+	type:"get",
+	cache:false,
+	url:url,
+	data:data,
+	timeout:10000,
+	error:function(){alert("操作失败");},
+	success:function(_)
+	{
+		var act=_.substring(0,1);
+		var info=_.substring(1);
+		switch(act)
+		{
+			case "0":alert(info);break;
+			case "1":
+				//alert(info);
+				location.reload(true);
+				break;
+			default:alert('操作失败');break;
+		}
+	}
+	});
+	return false;
+}
+function cache(){
+	var data,url;
+	$.ajax({
+	type:"get",
+	cache:false,
+	url:"{purl('admin/cache')}",
+	data:data,
+	timeout:10000,
+	error:function(){alert("操作失败");},
+	success:function(_)
+	{
+		var act=_.substring(0,1);
+		var info=_.substring(1);
+		switch(act)
+		{
+			case "0":alert(info);break;
+			case "1":
+				alert(info);
+				//location.reload(true);
+				break;
+			default:alert('操作失败');break;
+		}
+	}
+	});
+	return false;
+}
+</script>
+</body>
+</html>

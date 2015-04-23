@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">关于栏目{$cats}调用说明</div>
+<div class="text">
+  <p>FineCMS栏目信息保存在全局数组$cats中，当然你要知道栏目数组的结构了<br />
+    <img src="4-6.jpg" tppabs="http://www.dayrui.net/help/images/4-6.jpg" width="462" height="252" /><br />
+  通过这张图，大家应该对$cats数组结构了如指掌了吧</p>
+  <p>1、调用顶级栏目</p>
+  <p class="code">     {loop $cats $cat}<br />
+{if $cat['paentid'] == 0 &amp;&amp; $cat['ismenu']} //这里的$cat[‘ismenu’]是指作为菜单（在栏目管理处可以看到）。<br />
+业务逻辑处理....<br />
+{/if}<br />
+{/loop}<br />
+  </p>
+  <p>2、调用顶级栏目（存在下级栏目）</p>
+  <p class="code"> {loop $cats $cat}<br />
+{if $cat['paentid'] == 0 &amp;&amp; $cat['ismenu']} //先调出顶级栏目<br />
+业务逻辑处理....<br />
+{if $cat['child']} //判断该栏目是否有子栏目，N级栏目以此类推。<br />
+{loop $cats $a} //循环栏目组，$a防止与$cat冲突。<br />
+{if $a['parentid']==$cat['catid']}  //子栏目的父栏目id=它父栏目id<br />
+子栏目业务逻辑处理....<br />
+{/if}<br />
+{/loop}<br />
+{/if}<br />
+{/if}<br />
+{/loop}</p>
+  <p>3、循环栏目文章</p>
+  <p class="code">{loop $cats $cat}<br />
+    {if $cat['paentid'] == 0 &amp;&amp; $cat['typeid']==1} //先调出顶级栏目,且为内部栏目。<br />
+&lt;h1&gt;当前顶级栏目：{$cat['catname']}&lt;/h1&gt;<br />
+{if $cat['child']} //判断该栏目是否有子栏目。<br />
+{loop $cats $a} //循环子栏目数组，赋值$a。<br />
+{if $a['parentid']==$cat['catid']}  //子栏目的父栏目id=它父栏目id<br />
+{list catid=$a[catid] num=10}<br />
+&lt;li&gt;{$t['title']}&lt;/li&gt; //循环子栏目中的文章i信息<br />
+{/list}<br />
+{/if}<br />
+{/loop}<br />
+{/if}<br />
+{/if}<br />
+{/loop}</p>
+  <p>4、献给小白，在列表中取栏目信息</p>
+  <p class="code">{list catid=$catid .....}<br />
+    栏目：{$cats[$t['catid']]['catname']}<br />
+  {/list} </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span>作者：cctv</div>
+<br />
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="{ADMIN_THEME}images/reset.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/system.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/dialog.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/main.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/switchbox.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/table_form.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{ADMIN_THEME}js/jquery.min.js"></script>
+<script type="text/javascript" src="{ADMIN_THEME}js/dialog.js"></script>
+<title>admin</title>
+</head>
+<body style="font-weight: normal;">
+<div class="subnav">
+	<div class="content-menu ib-a blue line-x">
+		<a href="{url('admin/content/index', array('modelid'=>$modelid))}" {if $a=='index' && $recycle==0}class="on"{/if}><em>{lang('a-con-19')}({$total})</em></a><span>|</span>
+		<a href="{url('admin/content/verify', array('status'=>3, 'modelid'=>$modelid))}" {if $status==3}class="on"{/if}><em>{lang('a-con-21')}({$count[1]})</em></a><span>|</span>
+		<a href="{url('admin/content/verify', array('status'=>2, 'modelid'=>$modelid))}" {if $status==2}class="on"{/if}><em>{lang('a-con-22')}({$count[2]})</em></a><span>|</span>
+		<a href="{url('admin/content/index', array('recycle'=>1, 'modelid'=>$modelid))}" {if $recycle==1}class="on"{/if}><em>{lang('a-con-23')}({$count[0]})</em></a><span>|</span>
+		{if admin_auth($userinfo['roleid'], 'content-add')}<a href="{url('admin/content/add', array('modelid'=>$modelid))}"><em>{lang('a-con-24')}</em></a>{/if}
+	</div>
+	<div class="bk10"></div>
+	<div class="explain-col">
+		<form action="" method="post">
+		<input name="form" type="hidden" value="search" />
+		{if $catid}
+		{lang('a-fnx-15')}： <b>{$cats[$catid]['catname']}</b>  |  
+		{/if}
+		{lang('a-con-25')}： 
+		<select id="catid" name="catid">
+			<option value="0"> ---- </option>
+			{$category}
+		</select>
+		&nbsp;&nbsp;
+		<select name="stype">
+			<option selected="" value="0">{lang('a-con-26')}</option>
+			<option value="1">{lang('a-con-27')}</option>
+			<option value="2">{lang('a-con-28')}</option>
+		</select>
+		<input type="text" class="input-text" size="25" name="kw" /><input type="submit" class="button" value="{lang('a-search')}" name="submit" />
+		</form>
+	</div>
+	<div class="bk10"></div>
+	<div class="table-list">
+		<form action="" method="post" name="myform">
+		<input name="form" id="list_form" type="hidden" value="order" />
+		<table width="100%">
+		<thead>
+		<tr>
+			<th width="20" align="left"><input name="deletec" id="deletec" type="checkbox" onClick="setC()" /></th>
+			<th width="40" align="left">{lang('a-order')}</th>
+			<th width="40" align="left">ID </th>
+			<th align="left" id="t_title">{lang('a-con-26')}</th>
+			<th width="80" align="left">{lang('a-con-29')}</th>
+			<th width="50" align="left">{lang('a-con-30')}</th>
+			<th width="120" align="left">{lang('a-con-31')}</th>
+			<th align="left">{lang('a-option')}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{loop $list $t}
+		<tr>
+			<td align="left"><input name="del_{$t['id']}_{$t['catid']}" type="checkbox" class="deletec" /></td>
+			<td align="left"><input type="text" name="order_{$t['id']}" class="input-text" style="width:25px; height:15px;" value="{$t['listorder']}"></td>
+			<td align="left">{$t['id']}</td>
+			<td align="left">
+			<div id="s_title" style="height:20px;overflow: hidden;">
+			<a href="{if $a!='index'}{url('admin/content/editverify',array('id'=>$t['id']))}{else}{url('admin/content/edit',array('id'=>$t['id']))}{/if}" title="{$t['title']}">{$t['title']}</a>
+			</div>
+			</td>
+			<td align="left"><a href="{url('admin/content/index',array('catid'=>$t['catid'],'modelid'=>$t['modelid']))}">{$cats[$t['catid']]['catname']}</a></td>
+			<td align="left"><a {if $t['sysadd']}style="color:red;" title="{lang('a-con-35')}"{/if} href="{url('admin/content/index',array('kw'=>$t['username'],'modelid'=>$t['modelid'],'stype'=>($t['sysadd']?2:1)))}">{$t['username']}</a></td>
+			<td align="left"><span style="{if date('Y-m-d', $t['updatetime']) == date('Y-m-d')}color:#F00{/if}">{date(TIME_FORMAT, $t['updatetime'])}</span></td>
+			<td align="left">
+			{if $a=='verify'}
+				<?php $del = url('admin/content/delverify/',array('catid'=>$t['catid'],'id'=>$t['id']));?>
+				{if admin_auth($userinfo['roleid'], 'content-editverify')}<a href="{url('admin/content/editverify',array('id'=>$t['id']))}">{lang('a-edit')}</a> | {/if}
+				{if admin_auth($userinfo['roleid'], 'content-delverify')}<a href="javascript:;" clz="1" onClick="if(confirm('{lang('a-confirm')}')){ window.location.href='{$del}'; }">{lang('a-del')}</a> {/if}
+			{else}
+				{loop $join $j}
+				<a href="{url('admin/form/list',array('cid'=>$t['id'], 'modelid'=>$j['modelid']))}">{$j['modelname']}</a> |
+				{/loop}
+				<?php $del = url('admin/content/del/',array('catid'=>$t['catid'],'id'=>$t['id']));?>
+				<a href="{$site_url}{$t['url']}" clz="1" target="_blank">{lang('a-cat-23')}</a> | 
+				{if admin_auth($userinfo['roleid'], 'content-edit')}<a href="{url('admin/content/edit',array('id'=>$t['id']))}">{lang('a-edit')}</a> | {/if}
+				{if admin_auth($userinfo['roleid'], 'content-del')}<a href="javascript:;" clz="1" onClick="if(confirm('{lang('a-confirm')}')){ window.location.href='{$del}'; }">{lang('a-del')}</a> {/if}
+			{/if}
+			</td>
+		</tr>
+		{/loop}
+		<tr>
+			<td colspan="8" align="left">
+			<input {if !admin_auth($userinfo['roleid'], 'content-edit')}disabled{/if} type="submit" class="button" value="{lang('a-order')}" name="submit_order" onClick="$('#list_form').val('order')" {if $a=='verify'}disabled{/if} />&nbsp;
+			<input {if ($a=='index' && !admin_auth($userinfo['roleid'], 'content-del')) || ($a=='verify' && !admin_auth($userinfo['roleid'], 'content-delverify'))}disabled{/if} type="submit" class="button" value="{lang('a-del')}" name="submit_del" onClick="$('#list_form').val('del');return confirm_del();" />&nbsp;
+			{if $a=='verify'}
+			<input {if !admin_auth($userinfo['roleid'], 'content-verify')}disabled{/if} type="submit" class="button" value="{lang('a-con-36')}" name="submit_status_1" onClick="$('#list_form').val('status_1')" />&nbsp;
+			<input {if !admin_auth($userinfo['roleid'], 'content-verify')}disabled{/if} type="submit" class="button" value="{lang('a-con-37')}" name="submit_status_0" onClick="$('#list_form').val('status_0')" />&nbsp;
+			<input {if !admin_auth($userinfo['roleid'], 'content-verify')}disabled{/if} type="submit" class="button" value="{lang('a-con-38')}" name="submit_status_2" onClick="$('#list_form').val('status_2')" />&nbsp;
+			{else}
+			{if $recycle}
+			<input {if !admin_auth($userinfo['roleid'], 'content-edit')}disabled{/if} type="submit" class="button" value="{lang('a-con-36')}" name="submit_status_1" onClick="$('#list_form').val('status_1')" />&nbsp;
+			{else}
+			<input {if !admin_auth($userinfo['roleid'], 'content-edit')}disabled{/if} type="submit" class="button" value="{lang('a-con-39')}" name="submit_status_3" onClick="$('#list_form').val('status_3')" />&nbsp;
+			{/if}
+			{lang('a-con-40')}
+			<select name="movecatid">
+			<option value="0"> ---- </option>
+			{$category}
+			</select>
+			<input {if !admin_auth($userinfo['roleid'], 'content-edit')}disabled{/if} type="submit" class="button" value="{lang('a-con-41')}" name="submit_move" onClick="$('#list_form').val('move')" />&nbsp;
+			{/if}
+			</td>
+		</tr>    
+		</tbody>
+		</table>
+		{str_replace('<a>共' . $total . '条</a>', '<a>耗时' . runtime() . '秒</a><a>共' . $total . '条</a>', $pagelist['html'])}
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+    window.top.art.dialog({id:'clz'}).close();
+	$('a').click(
+		function(){
+		    var clz = $(this).attr('clz');
+			if (clz != '1') window.top.art.dialog({ id:'clz',title:'loading',fixed:true,lock:false,content: '<img src="{ADMIN_THEME}images/onLoad.gif">' });
+		}
+	);
+    $('input[type="submit"]').click(
+		function(){
+            window.top.art.dialog({ id:'clz',title:'loading',fixed:true,lock:false,content: '<img src="{ADMIN_THEME}images/onLoad.gif">' });
+		}
+	);
+	if ($(document).width() <= 900) {
+	    $('#s_title').css('width', '150px');
+		$('#t_title').attr('width', '150');
+	}
+});
+function confirm_del() {
+    if (confirm('{lang('a-confirm')}')) { 
+		return true; 
+	} else {
+	    return false;
+	}
+}
+function setC() {
+	if($("#deletec").attr('checked')) {
+		$(".deletec").attr("checked",true);
+	} else {
+		$(".deletec").attr("checked",false);
+	}
+}
+</script>
+</body>
+</html>

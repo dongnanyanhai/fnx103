@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>多站点及分站配置</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">多站点及分站配置</div>
+<div class="text">
+  <p><strong>一、视频教程链接</strong><br />
+  </p>
+  1、多站点：<a href="javascript:if(confirm(%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=994&extra=page%3D1  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=994&extra=page%3D1%27" tppabs="http://bbs.finecms.net/forum.php?mod=viewthread&tid=994&extra=page%3D1" target="_blank">http://bbs.finecms.net/forum.php?mod=viewthread&tid=994&extra=page%3D1</a>
+  <br />
+  2、分站：<a href="javascript:if(confirm(%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=940&extra=page%3D1  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=940&extra=page%3D1%27" tppabs="http://bbs.finecms.net/forum.php?mod=viewthread&tid=940&extra=page%3D1" target="_blank">http://bbs.finecms.net/forum.php?mod=viewthread&tid=940&extra=page%3D1</a>
+  <br />
+  <p><strong>二、多站点功能介绍</strong><br /></p>
+  多站点采用域名匹配方式，不同的域名绑定不同的站点，站点间内容相互独立，可增强负载能力<br /><br />
+  1、独立站点<br />
+  栏目、内容模型及表单模型相互独立，每个站点需要重新创建栏目及模型
+  <br /><br />2、继承站点<br />
+  栏目、内容模型及表单模型继承“被继承的站点”（如地区分站，各个站的栏目都一样），由于该类型站的栏目都一致，因此栏目不能生成静态
+  <br /><p><strong>三、模板数据调用</strong><br />
+  </p>
+  1、循环多站点的名称
+  <p class="code">
+	{loop $sites $site_id=>$config}<br />
+	站点id：$site_id<br />
+	站点地址：$config['URL']<br />
+	站点名称：$config['SITE_NAME']<br />
+	.... 打印下$config就明白了<br />
+	（说明：当前站点id是变量{$siteid}，当前站点高亮显示可以用到它）<br />
+	{/loop}<br />
+  </p>
+  2、调用多站点内容数据
+  <p class="code">
+	{list site=2 num=10} //调用站点2的所有内容<br />
+	.... <br />
+	{/list}<br />
+  </p>
+  
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

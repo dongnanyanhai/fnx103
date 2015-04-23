@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>系统安全</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">系统安全</div>
+<div class="text">
+  <p>一、存在多管理员账号建议开启“后台操作日志”<span class="f1">（系统设置-系统相关）</span>。 </p>
+  <p>二、更改管理目录路径<span class="f1">（默认admin）</span>。</p>
+  <p>1、在config/config.ini.php配置文件中找到“ADMIN_NAMESPACE”，设置成想要的目录名称（如test）。<br />
+    2、再将该目录（admin）重命名为前面设置的目录（如“test”，命名规则只能为小写英文字母）。<br />
+  3、访问地址就变成了http://网站/后台目录/（如http://网站/test/）。  </p>
+  <div class="code">robots.txt文件中增加屏蔽地址技巧：<br />
+    Disallow: /index.php?s=<strong>t</strong>* <br />
+    Disallow: /<strong>t*</strong><br />
+  表示以<strong>t</strong>开头的控制器或者目录禁止蜘蛛爬行，这样可以不暴露管理目录  </div></p>
+<strong>注意事项：config.ini.php不能用记事本等软件编辑，且保存编码为utf-8无BOM格式，否则会出大问题。</strong>
+<p>三、开启“非法字符过滤”以及开启&quot;攻击日志&quot;<span class="f1">（系统设置-系统相关）</span>。</p>
+<p>1、非法字符可以到config/attackcode.ini.php中去配置，系统集成了一些非法字符，用户可根据自己网站的需求来配置非法字符。</p>
+<p>2、受到非法字符攻击时可以开启邮件通知（<span class="f1">系统设置-系统相关-开启邮件通知</span>，一定要设置”网站管理邮箱以及邮件服务器配置“哦）。</p>
+<p>3、Ip禁止功能，若有非法字符攻击时系统会记录攻击者Ip、会员的id、受攻击页面、非法字符等信息，可以让其Ip禁止方法（<span class="f1">系统设置-禁止访问</span>）。</p>
+</div>
+<div class="foot">
+  <p style="float:right;">&nbsp;</p>
+  <p style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></p>
+</div>
+<br />
+</body>
+</html>

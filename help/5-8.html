@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">个性化URL结构</div>
+<div class="text">
+	<p><strong>一、支持主表字段（如果需要附表字段可以使用方法“三”）</strong></p>
+	<p class="code">要使用个性化URL结构，必须先阅读上面“数据结构”章节</p>
+	 <img src="58-1.jpg" tppabs="http://www.dayrui.net/help/images/58-1.jpg" />
+	 <p class="code">
+	 {catname}：示栏目名称，看过“数据结构”的都懂，不解释<br>
+	 {title}:是文章的id
+	 </p>
+	 1、静态生成模式<br />
+	 静态生成模式，不用加{id}标签，但要确保url地址的唯一（可以加其他参数来区分，如时间）<br />
+	 2、伪静态模式<br />
+	 伪静态模式，栏目必须有{id}或者{dir}/{pdir}，内容必须加{id}标签，前面已经说的很清楚了<br /><br>
+	 <img src="58-2.jpg" tppabs="http://www.dayrui.net/help/images/58-2.jpg" />
+	 <p class="code">如果你的服务器不支持多编码，可能会出现中文乱码，慎用</p>
+	<p><strong>二、运用普通函数（以md5函数为例子）</strong></p>
+    1、静态生成模式<br />
+  <img src="5-7-1.png" tppabs="http://www.dayrui.net/help/images/5-7-1.png" width="566" height="87" />
+  <p class="code">{md5({id})}.html : {id}表示调用当前的id，{md5(xxx)}表示进行md5运行，因为是静态生成模式，所有可以不用再次加id了</p>
+  	2、伪静态模式<br />
+	<img src="5-7-2.png" tppabs="http://www.dayrui.net/help/images/5-7-2.png" width="555" height="72" />
+    <p class="code">{md5({id})}-{id}.html : 前面一节跟上面一样，后面{id}表示调用当前的id，因为是伪静态嘛，必须与服务器的id匹配运算，所有必须加一个id<br>
+	{word2pinyin({title})}-{id}.html : 拼音标题+id.html（需要用的可以参考，不支持特殊汉字）
+	</p>
+    那么伪静态代码如下：
+  <p class="code">RewriteRule ^([a-zA-Z0-9]{32})-([0-9]+).html$ index.php?c=content&a=list&catid=$2 [L] (md5是32位的所有前面写了{32})</p>
+    <p><strong><img src="5-7-5.png" tppabs="http://www.dayrui.net/help/images/5-7-5.png" width="420" height="167" /><br />
+    <br />
+  三、运用自定义函数</strong></p>
+  例子：文章标题的拼音.html（我们以静态为例子吧，伪静态时记得跟上面例子一样必须加一个id）<br />
+	<img src="5-7-3.png" tppabs="http://www.dayrui.net/help/images/5-7-3.png" width="586" height="80" /><br />
+    从上面不难看出，我们是调用了自定义函数test()，那么我们就定义一个test的函数（自定义函数应该放在专用文件里/trunk/extensions/custom.php，不会影响系统升级）<br />
+  <p class="code">
+    function test($data, $page=1) {<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;if ($page > 1) {	//当带有分页时<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//word2pinyin函数是系统自带的拼音转换函数，特殊字不支持哦~<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return word2pinyin($data['title']) . '-' . $page;		//上面规则中写了.html为后缀，在这里就不用写了<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;} else {	//当不带分页时<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return word2pinyin($data['title']);	//上面规则中写了.html为后缀，在这里就不用写了<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+    }<br />
+	//其实这种URL格式方法二完全可以实现的
+    </p>
+	<img src="5-7-4.png" tppabs="http://www.dayrui.net/help/images/5-7-4.png" width="621" height="327" />
+	<p class="code">补充：	上面函数中的$data数组是指当前文章表（不包括自定义字段，若要使用自定义字段必须查询）、栏目表、表单（包括自定义字段）的数据</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

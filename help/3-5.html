@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>表单使用教程</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">表单使用教程</div>
+<div class="text">
+  <p>表单，顾名思义就是与前端用户提交数据相关的，如报名、留言、评论等<br />
+FineCMS系统支持两种类型的表单，即是独立表单和关联表单</p>
+  <p><strong>一、独立表单介绍</strong><br />
+    <br />
+    <strong>1、创建表单</strong><br />
+后台进入“表单管理”，选择“表单模型”，再“添加”模型<br />
+<img src="3-5-1.png" tppabs="http://www.dayrui.net/help/images/3-5-1.png" width="672" height="322" /><br />
+表单模板：提交表单的模板（<span class="f1">默认模板中包含“post_form.html”</span>）<br />
+列表模板：表单数据列表的模板（<span class="f1">默认模板中包含“list_form.html”</span>）<br />
+内容模板：表单数据详细内容的模板（<span class="f1">默认模板中包含“list_form.html”</span>）<br />
+创建模型之后，可以对其增加字段，跟前面的方式一致，不再重复介绍  <br />
+<br />
+  <strong>2、查看后台表单。</strong><br />
+  创建完成之后，请F5刷新浏览器，再进入“表单管理”，会发现左侧菜单出现了刚才添加的表单“留言管理”  <br />
+  <img src="3-5-2.png" tppabs="http://www.dayrui.net/help/images/3-5-2.png" width="375" height="242" />  <br />
+  <br />
+  <strong>3、配置表单</strong><br />
+进入“留言管理”，首先需要“配置表单”，各个参数都有说明的，不难看懂<br />
+<br />
+<strong>4、管理表单和发布内容</strong><br />
+这里不再介绍它了，跟内容管理和发布内容一致<br />
+  </p>
+  <p><strong>5、表单预览</strong><br />
+  这里一定要配置好模板，否则无法预览的</p>
+  <p><br />
+    <strong>二、关联表单介绍</strong><br />
+    <br />
+    <strong>1、创建表单</strong><br />
+    我们来创建一个“文章留言”的表单，跟上面介绍一致，不再描述<br />
+    <br />
+    <strong>2、配置表单</strong><br />
+    基本跟前面介绍一致<br />
+    v1.7.3及以上版本支持在会员中心显示表单内容列表以及“与我相关”的表单内容<br />
+    “与我相关”的表单内容是什么意思？举个例子：<br />
+    先把该表单“询价”（假设该表单叫“询价”，当然你也可以创建）关联到“商品”模型中；<br />
+    <strong class="f2">我</strong>发布了一件商品“测试商品示例”，其他人在“测试商品示例”提交的表单内容（询价）将会显示在这里；<br />
+    方便<strong class="f2">我</strong>查看其他人对<strong class="f2">我</strong>的这件商品“测试商品示例”的询价情况。<br />
+    <br />
+    <strong>3、关联表单到模型</strong><br />
+    可以关联内容模型也可关联到会员模型，我们用“关联内容模型”举例<br />
+    进入“内容管理”，再进入“内容模型”，选择需要关联的模型(我们这里关联“文章”)<br />
+    <img src="3-5-3.png" tppabs="http://www.dayrui.net/help/images/3-5-3.png" width="586" height="331" />    <br />
+    选择“关联表单”中的“文章留言”，这样就关联好了<br />
+v1.7.3及以上版本支持关联多个表单，操作方式类似    <br />
+<br />
+<strong>4、管理表单</strong><br />
+可以通过上面介绍的方式进行管理，也可通过关联的“文章”模型中管理<br />
+①、通过关联的“文章”模型中管理<br />
+你会发现“文章”模型管理中会多出一个“留言”，这就是管理关联内容的入口<br />
+点击“留言”进入管理页面，跟内容管理类似，下面多了一个“批量关联”命令，用于把表单内容重新关联到其他文章中。<br />
+这里管理只能对当前文章的关联内容管理。<br />
+<br />
+②、通过表单管理（跟上面介绍的一样了）。<br />
+这里是对所有表单内容管理（上面是对单个文章对应的内容管理），顶部链接可以返回到关联的“文章”页面<br />
+
+  </p>
+  <p>  <strong>5、表单配置（“表单调用”）</strong><br />
+关联类型的表单，一定要传入参数&quot;cid&quot;(及是文章id)，否则无法提交哦<br />
+格式如：http://localhost/index.php?c=form&amp;a=post&amp;modelid=表单模型id&amp;cid=文章内容id<br />
+其他都和上面介绍的一致了<br />
+<br />
+<strong>三、表单URL处理</strong><br />
+列表页面地址：index.php?c=form&amp;a=list&amp;modelid=表单模型id&amp;page=分页id&amp;cid=被关联的内容/会员id（cid参数可选）<br />
+内容页面地址：index.php?c=form&amp;a=show&amp;modelid=表单模型id&amp;id=表单内容id<br />
+<br />
+内容页面URL的构架可以用url()函数实现，也可以伪静态或者自定义函数实现<br />
+默认内容页面URL地址是：{url('form/show', array('modelid'=&gt;表单模型id, 'id'=&gt;表单内容id))} <br />
+<br />
+如果采用伪静态模式，就把规则指向上面的地址哦，举个例子：<br />
+表单内容URL地址为：http://xxx/form_10_1000.html (10表示模型id，1000表示内容id，内容地址必须传递2个参数)。<br />
+伪静态设置规则为（apache为例）：<br />
+<div class="code">RewriteRule ^form_([0-9]+)_([0-9]+).html$ index.php?c=form&amp;a=show&amp;modelid=$1&amp;id=$2 [L]</div><br />
+就这么简单，跟淘宝客插件的URL规则设定一致<br />
+</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

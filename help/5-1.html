@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS框架基础知识介绍</div>
+<div class="text">
+  <p><strong>一、目录结构</strong><br />
+    admin：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 后台面板引入文件<br />
+    cache：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 缓存目录，必须具有读写权限<br />
+    config：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 配置目录，部分文件需要开启读写权限<br />
+    controllers：&nbsp; 控制器目录，支持子目录（namespace）<br />
+    core：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 框架核心<br />
+    extensions：&nbsp; 扩展目录，用于放置第三方控件<br />
+    models：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 数据模型目录<br />
+    plugins：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件目录<br />
+    uploadfiles：上传文件目录<br />
+    views：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 视图模板目录<br />
+  index.php：&nbsp;&nbsp; 项目入口文件
+  </p><p><strong>二、命名规则</strong><br />
+    1、数据表命名规则：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 数据库中数据表的命名将全部采用小写字母<br />
+    2、配置文件的命名规则：配置文件名字字母全部小写,：后缀为.ini.php如：config.ini.php<br />
+    3、控制器命名规则：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 首字母大写+Controller.php如IndexController.php<br />
+    4、数据模型命名规则：&nbsp; 首字母大写+Model.php 如UserModel.php<br />
+    5、视图文件命名规则：&nbsp; 有效的html文件即可如index.html</p>
+  <p><strong>三、控制器名字空间Namespace</strong><br />
+    相当于控制器目录，如admin就是一个名字空间
+  </p><p><strong>四、控制器Controller文件的开发规则
+  </strong></p><p class="code"> &lt;?php<br />
+    class IndexController extends Common {<br />
+    public function __construct() {<br />
+    parent::__construct();<br />
+    }<br />
+    public function indexAction() {<br />
+    内容<br />
+    }<br />
+    }</p>
+  <p><br />
+    Controller文件的命名采用驼峰命名法则如：建立index的controller文件，其名字为IndexController.php<br />
+    解释：index首字母要大写，后再加上Controller,注意这个Controller也是首字母大写的<br />
+    Controller文件名字和内容中类的名字相同(字母大小写也一致的相同)<br />
+    如上所示，IndexController.php的内容类的名字按照此规应为：IndexController<br />
+  注意：继承Common，也可以直接继承Controller，推荐继承Common，因为系统会自动加载Common，它将作为每个namespace的公共控制器类
+  </p><p>访问地址：index.php?s=Namespace名称&amp;c=控制器名称&amp;a=Action名称
+  </p><p>五、Model文件的开发规则<br />
+    Model文件的开发规则类似于Controller文件的开发规则只是把Controller换成Model的区别，最好参考Controller文件的开发规则来理解<br />
+    Model文件命名采用驼峰命名法则<br />
+    Model文件内容类的名字和文件名要一致<br />
+    例：要建一个新Model文件，假设为demo表的model文件文件名字为：DemoModel.php内容为：</p>
+  <p class="code">&lt;?php<br>
+   class DemoModel extends Model {<br>
+   public function get_primary_key() {<br />
+    return $this-&gt;primary_key = 'id'; //表demo的主键<br />
+    }<br />
+  <br />
+    public function get_fields() {<br />
+    return $this-&gt;get_table_fields();<br />
+    }<br />
+  <br />
+    }</p>
+  <p><br />
+  解释：以上格式是固定格式，如果需要扩展，可在里面添加function
+</p></div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

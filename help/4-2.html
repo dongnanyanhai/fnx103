@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+table {padding:3px;}
+td {
+    border: 1px solid #E3EDF5;
+    overflow: hidden;
+    padding: 4px;
+}
+</style>
+</head>
+<body>
+<div class="head">FineCMS万能标签list功能介绍 </div>
+<div class="text">
+  <table cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="84">action</td>
+        <td width="666">支持&quot;推荐位(position)&quot;、&quot;搜索关键字(keywords)&quot;、&quot;相关文章(relation)&quot;模式，普通数据查询不需要此参数</td>
+      </tr>
+      <tr>
+        <td>table</td>
+        <td>循环表名称，默认为内容表，可以用其他表，插件表格式为：插件名称.表名称(link.linkname)</td>
+      </tr>
+      <tr>
+        <td>catid</td>
+        <td>当前栏目ID号</td>
+      </tr>
+      <tr>
+        <td>num</td>
+        <td>显示数量，还可以写成&quot;num=1,5&quot;相当于limit 1,5</td>
+      </tr>
+      <tr>
+        <td>return</td>
+        <td>返回数组名称，用于循环，默认值为't'，调用方式:{$t['title']}</td>
+      </tr>
+      <tr>
+        <td>more</td>
+        <td>值为1时，自动调用内容表的附表内容（也就是自定义的字段）</td>
+      </tr>
+      <tr>
+        <td>order</td>
+        <td>排序，例如: order=id_desc,userid_desc，默认desc排序，可以省掉_desc</td>
+      </tr>
+      <tr>
+        <td>join</td>
+        <td>联合查询表名称（用该表的主键关联），例如：join=member</td>
+      </tr>
+      <tr>
+        <td>on</td>
+        <td>其他表的字段（非join表的自段），必须与join成对出现，否则join失效，例如：join=member on=userid</td>
+      </tr>
+      <tr>
+        <td>page</td>
+        <td>用于分页查询，如果出现了num参数，分页查询将会失效</td>
+      </tr>
+      <tr>
+        <td>urlrule</td>
+        <td>分页URL格式（分页标识符_page_或者[page]），例如:urlrule=$catid-[page].html</td>
+      </tr>
+      <tr>
+        <td>pagesize</td>
+        <td>分页查询每页显示的记录数量（如果出现catid，系统默认会使用该栏目的分页数量）</td>
+      </tr>
+      <tr class="f2">
+        <td>cache</td>
+        <td>数据缓存，单位秒，在这缓存时间内调用缓存文件而不再去访问数据库</td>
+      </tr>
+      <tr>
+        <td>thumb</td>
+        <td>值等于1的时候，显示有缩略图的文档；等于0的时候，显示无缩略图的文档（v1.7）</td>
+      </tr>
+      <tr>
+        <td>form</td>
+        <td>调用表单，例如:form=liuyan ，就是调用liuyan的表单数据（v1.7.5）</td>
+      </tr>
+      <tr>
+        <td>site</td>
+        <td>站点id，用于多站点调用，例如: site=2 table=content ，就是调用站点2的内容表（v1.7.5）</td>
+      </tr>
+      <tr>
+        <td>fields</td>
+        <td>为sql语句指定字段，例如: fields=title,url ，与sql语法一致（不能使用`），支持自定义字段名称（v1.7.5）</td>
+      </tr>
+      <tr>
+        <td>extend</td>
+        <td>对特殊sql语句进行延展，具体教程<a href="javascript:if(confirm(%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=871  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://bbs.finecms.net/forum.php?mod=viewthread&tid=871%27" tppabs="http://bbs.finecms.net/forum.php?mod=viewthread&tid=871" target=_blank>传送口</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>格式： {list 参数1=值1 参数2=值2 ... 参数N=值N} ... 循环体 ... {/list}<br />
+  <p class="f2">注意：参数和值不能出现引号<br />
+  </p></p>
+  <p><strong>一、参数介绍</strong><br />
+    <br />
+    1、action<br />
+    模式选择参数，支持&quot;推荐位(position)&quot;、&quot;搜索关键字(keywords)&quot;、&quot;相关文章(relation)&quot;、&quot;自定义字段信息(field)&quot;模式<br />
+    例如：推荐位查询<br />
+    <p class="code">{list action=position id=1} ... {/list}</p>
+    返回推荐位id=1的数据并循环<br />
+    <br />
+    2、return<br />
+    数据返回变量，默认为t，循环内直接使用{$t[字段]}<br />
+    <p class="code">{list ... return=item} {$item['title']} {/list}</p>
+	返回变量就成了$item，而不再是$t，多层list标签可以用它来解决变量冲突<br />
+    <br />
+    3、more<br />
+    当其值为1时，表示联合附表查询，必须与catid或者modelid参数联合使用<br />
+    <p class="code">{list catid=$catid more=1 cache=36000} ... {$t[附表字段]} ... {/list}</p>
+	可快速查询出该栏目的自定义字段数据，可配合fields参数减少缓存大小<br />
+    <br />
+    4、join和on<br />
+    联合查询表名称，必须与on成对出现<br />
+    <p class="code">{list table=content join=member on=userid} ... {/list}</p>
+    表content与member关联查询，on是表content中的关联字段，就是以member表的主键与content表的userid字段先关联查询<br />
+    <br />
+    5、page、pagesize(显示数量)和urlrule(分页规则)<br />
+    分页查询，如果存在caitd，则使用该栏目的分页规则和显示数量，返回分页结果变量{$pagelist}<br />
+    <p class="code">{list catid=$catid page=$page} ... {/list}</p>
+	栏目分页时，会调用该栏目的分页规则配置，无需后面两个参数<br />
+    <br />
+    6、num<br />
+    Limit控制，最大显示数量<br />
+    <p class="code">{list catid=$catid num=5} ... {/list}<p/>
+    最大显示5条记录(可以写成num=1,5，表示从1开始到5行结束)<br />
+    <br />
+    7、order<br />
+    <p class="code">{list catid=$catid order=updatetime,id} ... {/list}</p>
+	示例按updatetime降序，id降序，如果升序就附加:字段_ASC（默认是降序）<br />
+    <br />
+    8、字段作为参数（同一字段只能出现一次）<br />
+    <p class="code">{list catid=1 username=admin num=10} ...{/list}</p>
+    其中的username是内容表中的字段，解析为：catid=1 and username='admin'<br />
+    <p class="code">{list NOTcatid=1 num=10} ...{/list}</p>
+    解析为：catid not in (栏目集合)<br />
+    <br />
+    9、cache<br />
+	缓存参数，推荐list查询都加上它<br />
+    <p class="code">{list catid=1 cache=3600} ...{/list}</p>
+	缓存3600秒（1小时），在3600秒内调用缓存数据而不访问数据库，减轻服务器压力<br />
+	<br />
+    10、thumb<br />
+	是否显示缩略图<br />
+    <p class="code">{list thumb=1 cache=3600} ...{/list}</p>
+	当thumb=1时，表示显示有缩略图的文档，相当于SQL中的thumb<>''；当thumb=0时，相当于SQL中的thumb=''<br />
+	<br />
+    11、form<br />
+	表单数据查询快捷参数<br />
+    <p class="code">{list form=liuyan cache=3600} ...{/list}</p>
+	调用表单，例如表单为liuyan ，示例就是调用liuyan的表单数据，当然相对应本站点<br />
+	<br />
+	12、site<br />
+	用于查询指定站点数据<br />
+    <p class="code">{list site=2 table=content num=10 cache=3600} ...{/list}</p>
+	站点id，用于多站点调用，示例就是调用站点2的内容表数据<br />
+	<br />
+	12、fields<br />
+	为sql语句指定字段，与sql语法一致（各个字段不能使用`字段名`，程序会自动为你加上），支持自定义字段名称<br />
+    <p class="code">{list fields=title,url,content catid=1 more=1 num=10 cache=3600} ...{/list}</p>
+	示例中解析为SQL是：select `主表`.`title`,`主表`.`url`,`附表`.`content` from .... <br />
+	
+  </p><br />
+<p><strong>二、相关示例</strong><br />
+  <br />
+    1、栏目查询<br />
+<p class="code">{list catid=$catid order=updatetime num=10} ... {/list}</p>
+    查询当前栏目的10条数据，并按updatetime desc排序<br />
+<br />
+    2、栏目分页查询<br />
+    <p class="code">{list catid=$catid order=updatetime page=$page} ... {/list}</p>
+    查询当前栏目，按照当前栏目默认分页方式分页<br />
+<br />
+    3、自定义分页查询<br />
+    <p class="code">{list catid=$catid order=updatetime page=$page pagesize=10 urlrule=$catid-[page].html} ... {/list}</p>
+    <p>分页查询，每页显示10条，url地址格式为：栏目id-分页id.html<br />
+      <br />
+      4、联合附表的自定义字段查询<br />
+    </p>
+<p class="code">{list catid=$catid more=1 num=10} ... {/list}</p>
+    5、Join关联查询<br />
+    <p class="code">{list catid=$catid join=member on=userid} ... {/list}</p>
+    解析为：from 内容表 left join member on 内容表.userid=member.主键<br />
+<br />
+    6、自定义表查询<br />
+    <p class="code">{list table=member groupid=1} ... {/list}</p>
+    查询member表中groupid=1的用户<br />
+<br />
+    7、插件表查询<br />
+    <p class="code">{list table=review.revirew_total contentid=10} ... {/list}</p>
+    查询review插件中的表review_total中contentid=10的数据</p>
+    <br />
+    <strong><br />
+    </strong>
+  <p><strong>三、Action参数</strong><br />
+    <br />
+    1、推荐位(position)<br />
+<p class="code">{list action=position id=1 catid=$catid} ... {/list}</p>
+    id：推荐位的id<br />
+    catid：可选，根据推荐位的类别而决定<br />
+    输出字段请参考position_data表结构，不用解释太多大家都懂<br />
+<br />
+    2、搜索关键字(keywords)<br />
+    <p class="code">{list action=keywords order=addtime} ... {/list}</p>
+    order：排序字段参考search表<br />
+    输出字段请参考search表结构，不用解释太多大家都懂<br />
+<br />
+    3、相关文章(relation)<br />
+    ①、调用手动添加的相关文章<br />
+    <p class="code">{list action=relation id=$id num=10} ... {/list}</p>
+    id：文章的id<br />
+    num：显示数量，默认10条<br />
+    ②、通过关键字自动调用相关文章<br />
+    <p class="code">{list action=relation tag=$keywords id=$id num=5}...{/list}</p>
+    id：当前文章id<br />
+    tag：当前文章的关键字<br />
+    catid：栏目id(可选)<br />
+    modelid：模型id(可选)<br />
+<br />
+    4、自定义字段显示(field)（适合自定义字段表单显示）<br />
+    <p class="code">{list action=field modelid=$modelid name=字段名称 value=字段默认值} ... {/list}</p>
+    modelid：栏模型id（必选）<br />
+    name：字段名称（必选）<br />
+    value：字段值（可选）<br />
+    返回数据{$t['form']}：用于表单显示（就是一个表单输入框）<br />
+    返回数据{$t['data']}：返回复选框、单选按钮中的选项名称和值（数组类型，若要输出请用loop配合）<br />
+    例：<br />
+    ①、调用模型2中的自定义字段zhiduan（默认值200）的输入表单<br />
+    <p class="code">{list action=field modelid=2 name=zhiduan value=200} {$t['form']} {/list}</p>
+    ②、调用模型2中的自定义字段zhiduan（必须是复选框、单选按钮类型）的值<br />
+    <div class="code">{list action=field modelid=2 name=zhiduan}<br />
+    {loop $t['data'] $n=&gt;$v}<br />
+    名称：{$n}，值：{$v}；<br />
+    {/loop}<br />
+    {/list}</div><br />
+    因为$t['data']是数组类型，说以要用loop循环输出，不用解释太多大家都懂</p>
+  <p><strong>四、特殊字段辅助参数</strong><br />
+    <br />
+    1、NOTcatid=值<br />
+    注：NOT只能与栏目catid搭配<br />
+    表示catid not in (栏目集合)，不用解释太多大家都懂<br />
+    <br />
+    2、OR字段名称=值<br />
+    <p class="code">{list catid=$catid ORuserid=1 ... }</p>
+    表示where ... catid=$catid or userid=1<br />
+    3、IN字段名称=值<br />
+    <p class="code">{list catid=$catid INstatus=0,1,2 ... }</p>
+    表示where ... catid=$catid and status in (0,1,2)<br />
+<br />
+    4、BW字段名称=值<br />
+    <p class="code">{list catid=$catid BWstatus=1,2 ... }</p>
+    表示where ... catid=$catid and status between 1 and 2<br />
+<br />
+    5、LIKE字段名称=值<br />
+    <p class="code">{list LIKEtitle=%finecms% ...}</p>
+    表示where ... title LIKE '%finecms%'，不用解释太多大家都懂</p>
+    <br />
+    <br />
+<p><strong>五、返回数据</strong><br />
+  <br />
+    1、循环变量return=?，默认为$t<br />
+    2、分页变量{$pagelist}<br />
+    3、SQL查询字符串{$sql}（用于测试，打印当前查询的sql语句）<br />
+    4、统计变量{$total}，返回数据总数量<br />
+    5、循环计数{$key}，用于list循环计数变量，从0开始<br />
+    6、循环统计变量{$count}，统计本次循环记录数量<br />
+    7、支持多层lsit，防止变量冲突，必须设置不同的return值（v1.7.1及以上版本）<br />
+    如果存在return值，那么所有变量必须加上后缀&quot;_return值&quot;，例如：
+  <div class="code">{list ... return=s}<br />
+    循环计数变量：{$key_s}<br />
+    {/list}</div><br />
+    分页：{$pagelist_s}<br />
+    总数：{$total_s}<br />
+  </p>
+</div>
+<div class="foot"><p style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></p></div>
+<br />
+</body>
+</html>

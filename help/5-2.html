@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS的Controller应用</div>
+<div class="text">
+  <p>Controller是MVC中的C，即控制程序，是M和V的纽带</p>
+  <p><strong>一、文件命名</strong><br />
+    控制器名称：控制器名称（首字母大写）+ Controller.php，如TestController.php<br />
+    控制器方法：方法名称（小写）+ Action，如indexAction()</p>
+  <p><strong>二、程序格式</strong></p>
+  <p class="code">&lt;?php<br />
+   class TestController extends Common { //继承公共控制器类<br />
+  &nbsp; public function __construct() {<br />
+   &nbsp;&nbsp; parent::__construct();<br />
+   &nbsp; }<br />
+  <br />
+   &nbsp; public function indexAction() { //控制器方法index<br />
+  &nbsp;&nbsp; $id = $this-&gt;get('id');//获取GET['id']值
+   &nbsp;&nbsp; <br />
+ &nbsp;&nbsp; $category = $this-&gt;model(&quot;category&quot;); //实例化栏目表category对象，可以使用Model类中的方法调用数据 <br />
+   &nbsp;&nbsp; $title = 'hello finecms~~';//普通变量<br />
+ &nbsp;&nbsp; $this-&gt;view-&gt;assign('title', $title);//将变量赋值给模板<br />
+ &nbsp;&nbsp;	$this-&gt;view-&gt;display('test');//加载模板，test表示test.html<br />
+   &nbsp; }<br />
+    }</p>
+  <p><br />
+    <strong>三、访问地址</strong><br />
+    格式：网站地址/index.php?s=空间&amp;c=控制器名称(小写)&amp;a=控制器方法(小写)<br />
+  例如：http://localhost/index.php?c=test&amp;a=index</p>
+  <p><strong>四、常用方法介绍</strong><br />
+    1、get($name)<br />
+    获取全局变量$_GET的$name的值，并进行trim()及htmlsepcialchars()处理<br />
+    参数说明：<br />
+    $name: 与$_GET的参数相同<br />
+    举例说明：<br />
+$name = $this-&gt;get('name')    <br />
+    2、post($name)<br />
+    获取全局变量$_POST的$name的值，并进行trim()及htmlsepcialchars()处理，支持多维数组<br />
+    参数说明：<br />
+    $name: 与$_POST的参数相同<br />
+    举例说明：<br />
+    $name = $this-&gt;post('name')</p>
+  <p>3、isPostForm($var='submit', $emp=0)<br />
+    验证是否来自表单POST提交。<br />
+    参数说明：<br />
+    $var: 表单提交按钮的名称，默认为submit<br />
+    $emp: 提交按钮的value值，默认为0<br />
+    举例说明：<br />
+    if ($this-&gt;isPostForm) {<br />
+    echo '是post提交';<br />
+  }</p>
+  <p>4、get_server_name()<br />
+    获取页面网址中的域名<br />
+    使用举例：echo $this-&gt;get_server_name()。//http://localhost/</p>
+  <p>5、get_base_url()<br />
+    获取当前项目的根目录的URL。<br />
+    使用举例：$this-&gt;get_base_url(); // /cms/</p>
+  <p>6、get_theme_url()<br />
+    当前项目的风格目录。<br />
+    使用举例：$this-&gt;get_theme_url(); // /views/default/</p>
+  <p>7、redirect($url)<br />
+    网页的url跳转。<br />
+    参数说明：$url地址。<br />
+    使用举例：$this-&gt;redirect('http://www.xx.com');</p>
+  <p>8、create_url($route, $params = null)<br />
+    组装URL路由功能的网址，可直接使用url()函数<br />
+    参数说明：<br />
+    $route为namespace、controll及页面action的组合。<br />
+    $params为网址中的参数部分。此参数为数组。索引为参数名，值为参数值。此参数可为空。<br />
+    使用举例：<br />
+    $this-&gt;create_url('post/view', array('id'=&gt;35)); //URL:/index.php?c=post&amp;a=view&amp;id=35<br />
+    $this-&gt;create_url('admin/post/view', array('id'=&gt;35)); //URL:/index.php?s=admn&amp;c=post&amp;a=view&amp;id=35<br />
+    推荐使用全局函数url($route, $params = null),第三参数为兼容旧版本无实际意义，开发中只需前2个参数即可<br />
+  </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

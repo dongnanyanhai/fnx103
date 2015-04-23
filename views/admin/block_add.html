@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="{ADMIN_THEME}images/reset.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/system.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/dialog.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/switchbox.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/table_form.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{ADMIN_THEME}js/jquery.min.js"></script>
+<script type="text/javascript" src="{ADMIN_THEME}js/dialog.js"></script>
+<script type="text/javascript">var sitepath = "{SITE_PATH}{ENTRY_SCRIPT_NAME}";</script>
+<script type="text/javascript" src="{LANG_PATH}lang.js"></script>
+<script type="text/javascript" src="{ADMIN_THEME}js/core.js"></script>
+<title>admin</title>
+</head>
+<body style="font-weight: normal;">
+<div class="subnav">
+	<div class="content-menu ib-a blue line-x">
+		<a href="{url('admin/block')}"><em>{lang('a-men-30')}</em></a><span>|</span>
+		<a href="{url('admin/block/add')}" class="on"><em>{lang('a-add')}</em></a><span>|</span>
+		<a href="{url('admin/block/cache')}"><em>{lang('a-cache')}</em></a>
+	</div>
+	<div class="bk10"></div>
+	<div class="table-list">
+		<form action="" method="post">
+		<input name="id" type="hidden" value="{$data['id']}">
+		<table width="100%" class="table_form">
+		<tr>
+			<th width="200">{lang('a-blo-7')}： </th>
+			<td><input class="input-text" type="text" name="data[name]" value="{$data['name']}" size="30" required /></td>
+		</tr>
+		<tr>
+			<th>{lang('a-blo-8')}： </th>
+			<td>
+			<!-- 阿海新增，编辑数据时，不能修改Block中的链接类型 -->
+			{if $a=='edit'}
+				<select id="type" name="data[type]" onChange="select_type(this.value)" required/>
+				{loop $type $i=>$v}
+				{if $data['type']==$i}
+				<option value="{$i}" selected>{$v}</option>
+				{/if}
+				{/loop}
+				</select>
+			{else}
+				<select id="type" name="data[type]" onChange="select_type(this.value)" required/>
+				<option value="0"> ... {lang('a-select')}</option>
+				{loop $type $i=>$v}
+				<option value="{$i}" {if $data['type']==$i}selected{/if}>{$v}</option>
+				{/loop}
+				</select>
+			{/if}
+			</td>
+		</tr>
+		<tr id="text_1" style="display:none">
+			<th>{lang('a-blo-9')}： </th>
+			<td><textarea name="data[content_1]" id="data[content]" cols="91" rows="8" />{$data['content']}</textarea>
+			<br><div class="onShow">{lang('a-blo-10')}</div></td>
+		</tr>
+		<tr id="text_2" style="display:none">
+			<th>{lang('a-blo-9')}： </th>
+			<td><input type="text" class="input-text thumb_2" size="50" value="{$data[content]}" name="data[content_2]" {if $data['type']==2 && $a=='edit'}id="thumb"{else}id="thumb_2"{/if}/>
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="preview('thumb')" value="{lang('a-mod-118')}">
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="uploadImage('thumb')" value="{lang('a-mod-119')}">
+				<div id="urlTip" class="onShow">{lang('a-pic')}</div></td>
+		</tr>
+		<tr id="text_3" style="display:none;">
+			<th>{lang('a-blo-9')}：</th>
+			<td>
+			{php App::auto_load('fields');echo content_editor('content_3', array(0=>$data['content']), array('system'=>1));}
+			<br><div class="onShow">{lang('a-blo-11')}</div>
+			</td>
+		</tr>
+
+		<!-- Block新增链接类型 -->
+		<tbody id="text_4" style="display:none;">
+			<tr>
+				<th>{lang('a-con-26')}：</th>
+				<td>
+					<input type="text" class="input-text" size="50" id="title" value="{$data['content']['title']}" name="data[content_4][title]"/>
+				</td>
+			</tr>
+			<tr>
+				<th>{lang('a-con-59')}：</th>
+				<td>
+	            <input type="text" class="input-text" size="50" id="url" value="{if $data['content']['url']}{$data['content']['url']}{else}{SITE_PATH}{/if}" name="data[content_4][url]"/>
+	            </td>
+			</tr>
+			<tr>
+				<th>{lang('a-con-45')}：</th>
+				<td><input type="text" class="input-text thumb_4" size="50" value="{$data['content']['thumb']}" name="data[content_4][thumb]" {if $data['type']==4 && $a=='edit'}id="thumb"{else}id="thumb_4"{/if}>
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="preview('thumb')" value="{lang('a-mod-118')}">
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="uploadImage('thumb')" value="{lang('a-mod-119')}">
+				<div id="urlTip" class="onShow">{lang('a-pic')}</div>
+				</td>
+			</tr>
+			<!-- <tr>
+				<th>{lang('a-con-45')}2：</th>
+				<td><input type="text" class="input-text" size="50" value="{$data['content']['thumb2']}" name="data[content_4][thumb2]" id="thumb2">
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="preview('thumb2')" value="{lang('a-mod-118')}">
+				<input type="button" style="width:66px;cursor:pointer;" class="button" onClick="uploadImage('thumb2')" value="{lang('a-mod-119')}">
+				<div id="urlTip" class="onShow">{lang('a-pic')}</div>
+				</td>
+			</tr> -->
+			<tr>
+				<th>{lang('a-fnx-26')}：</th>
+			    <td>
+			        <input type="text" class="input-text" size="50" value="{$data['content']['file']}" name="data[content_4][file]" id="file">
+			        <input type="button" style="width:66px;cursor:pointer;" class="button" onclick="check_show()" value="{lang('a-mod-164')}">
+			        <input type="button" style="width:66px;cursor:pointer;" class="button" onclick="uploadFile('file','{$SITE_FNX_FILETYPE}','{$SITE_FNX_FILESIZE}')" value="{lang('a-mod-120')}">
+			        <div id="fileTip" class="onShow">{lang('a-fnx-28')}:{base64_decode($SITE_FNX_FILETYPE)}</div>
+			    </td>
+			</tr>
+			<tr>
+				<th>{lang('a-desc')}：</th>
+				<td><textarea style="width:540px;height:100px;" id="description" name="data[content_4][description]">{$data['content']['description']}</textarea></td>
+			</tr>
+			<tr>
+				<th>{lang('a-fnx-25')}：</th>
+				<td>
+					<input type="radio" {if !isset($data['content']['isblank']) || $data['content']['isblank']==1}checked{/if} value="1" name="data[content_4][isblank]" /> {lang('a-yes')}&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" {if isset($data['content']['isblank']) && $data['content']['isblank']==0}checked{/if} value="0" name="data[content_4][isblank]" /> {lang('a-no')}
+				</td>
+			</tr>
+		</tbody>
+
+		<!-- End of Block新增链接类型 -->
+		
+		<!-- Block新增单文件上传类型 -->
+		<tr id="text_5" style="display:none">
+		    <th>{lang('a-fnx-26')}：</th>
+		    <td>
+		        <input type="text" class="input-text" size="50" value="{$data['content']}" name="data[content_5]" id="block_file">
+		        <input type="button" style="width:66px;cursor:pointer;" class="button" onclick="file_info('block_file')" value="{lang('a-mod-164')}">
+		        <input type="button" style="width:66px;cursor:pointer;" class="button" onclick="uploadFile('block_file','{$SITE_FNX_FILETYPE}','{$SITE_FNX_FILESIZE}')" value="{lang('a-mod-120')}"><span id="ck_block_file">{lang('a-fnx-28')}:{base64_decode($SITE_FNX_FILETYPE)}</span>
+		    </td>
+		</tr>
+		<!-- End of Block新增单文件上传类型 -->
+
+
+		<tr>
+			<th>&nbsp;</th>
+			<td><input class="button" type="submit" name="submit" value="{lang('a-submit')}" /></td>
+		</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+function select_type(id) {
+	if(id == 2){
+		$(".thumb_4").attr("id","thumb_4");
+		$(".thumb_2").attr("id","thumb");
+	}else if(id == 4){
+		$(".thumb_2").attr("id","thumb_2");
+		$(".thumb_4").attr("id","thumb");
+	}
+	$("#text_1").hide();
+	$("#text_2").hide();
+	$("#text_3").hide();
+	$("#text_4").hide();
+	$("#text_"+id).show();
+
+}
+
+function check_show(){
+	var fileval = $("#file").val();
+	var point = fileval.lastIndexOf(".");
+	var filetype = fileval.substr(point);
+	if( filetype == ".jpg" || filetype == ".gif" || filetype == ".png" || filetype == ".JPG" || filetype == ".GIF" || filetype == ".PNG" ){
+		preview('file');
+	}else{
+		file_info('file');
+	}
+}
+
+{if $data['type']}
+$("#text_{$data['type']}").show();
+{/if}
+</script>
+</body>
+</html>

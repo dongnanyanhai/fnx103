@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS的View应用</div>
+<div class="text">
+  <p>视图(view)是MVC中的V。作用是完成视图文件的处理并将页面内容显示出来。</p>
+  <p><strong>一、FineCMS视图机制的运行原理</strong><br />
+    首先需要在controller文件中实现化Views(视图基类)。<br />
+    通过视图基类中的assign()对视图变量完成赋值，然后由display()完成视图文件的加载，编译和显示。<br />
+    当display()运行时，首先分析视图文件的编译文件，当编译文件需要重新生成时则加载视图文件，将视图文件中的“模板标签”转换为PHP代码。<br />
+    将处理后的内容写入编译文件。如编译文件无需重新生成时，则直接加载编译文件并显示其内容。</p>
+  <p><strong>二、视图基类的模板标签说明</strong><br />
+    <span class="code">FineCMS的视图标签详细情况请参考上面的标签教程</span></p>
+  <p>1、模板变量。<br />
+    {$模板变量}<br />
+    {$模板变量['索引']}<br />
+    例：<br />
+    {$sitename}<br />
+    {$lines['name']}</p>
+  <p>2、判断语句的模板标签。<br />
+    {if $模板变量1 运算符 $模板变量}<br />
+    模板内容1<br />
+    {else}<br />
+    模板内容2<br />
+    {/if}<br />
+    或<br />
+    {if $模板变量1 运算符 $模板变量2}<br />
+    模板内容1<br />
+    {else if $模板变量1 运算符 $模板变量3}<br />
+    模板内容2<br />
+    {else}<br />
+    模板内容3<br />
+    {/if}<br />
+    注：这里的运算符支持：&gt; 、&lt; 、&gt;= 、&lt;=、==、！= 、&lt;&gt;。<br />
+    例一、<br />
+    {if $x&gt;$y}<br />
+    x大于y<br />
+    {else}<br />
+    x不大于y<br />
+    {/if}</p>
+  <p>例二、<br />
+    {if $x&gt;$y}<br />
+    x大于y<br />
+    {else if $x==$y}<br />
+    x等于y<br />
+    {else}<br />
+    X小于y<br />
+    {/if}</p>
+  <p>例三、<br />
+    {if $x &gt;300}<br />
+    x大于300<br />
+    {else if $x&gt;200}<br />
+    X大于200<br />
+    {else}<br />
+    x小于等于200<br />
+    {/if}</p>
+  <p>例四、<br />
+    {if $x == true}<br />
+    x为true<br />
+    {else}<br />
+    x为false<br />
+    {/if}</p>
+  <p>例五、<br />
+    {if $x == false}<br />
+    x为false<br />
+    {else}<br />
+    x为true<br />
+    {/if}</p>
+  <p>例六、<br />
+    {if $data['num'] == $total_num}或{if $data.num == $total_num}<br />
+    数量为 {$total_num}<br />
+    {else}<br />
+    数量不为{$total_num}<br />
+    {/if}</p>
+  <p>例七、<br />
+    {if $data['num'] == 200}或{if $data.num == 200}<br />
+    数量为200<br />
+    {else}<br />
+    数量不为200<br />
+    {/if}</p>
+  <p>例八、<br />
+    {if $data['num'] &gt; 200}或{if $data.num &gt; 200}<br />
+    数量大于200<br />
+    {else if $data['num'] &gt; 100}<br />
+    数量大于100<br />
+    {else}<br />
+    数量不大于100<br />
+    {/if}</p>
+  <p>例九、<br />
+    {if $data['state']== true}<br />
+    state开启<br />
+    {else}<br />
+    state未开启<br />
+    {/if}</p>
+  <p>例十、<br />
+    {if $data['menu']== 'index'}<br />
+    首页<br />
+    {else}<br />
+    其它<br />
+    {/if}</p>
+  <p>3、循环语句的模板标签。<br />
+    {loop 模板数组 $索引变量=&gt;$值变量}<br />
+    执行语句<br />
+    {/loop}<br />
+    或<br />
+    {loop 模板数组 $值变量}<br />
+    执行语句<br />
+    {/loop}</p>
+  <p>例一、<br />
+    {loop $data $key=&gt;$value}<br />
+    {$key}:{$value}<br />
+    {/loop}</p>
+  <p>例二、<br />
+    {loop $data $value}<br />
+    n+1次<br />
+    {/loop}</p>
+  <p>4、template/include模板标签。<br />
+    {template模板文件} 或者  {include模板文件}<br />
+    注：此模板文件一般为共享性模板文件。如：每个页面的版信息。如果将版权信息这部分单独自作一个独立模板，让每个页面通过include的方式进行共享。</p>
+  <p>例一、<br />
+    {template common/copyright } 或者 {include common/copyright }<br />
+    注：common为系统目录views中的子目录，copyright为文件名。模板文件这里省略了.html的后缀名。</p>
+  <p>例二、<br />
+    {template copyright } 或者 {include copyright }<br />
+    注：这里的模板名称只有copyright，没有上面例一中的common目录。<br />
+    当模板文件名不含模板所在的目录时，系统默认为这个页面。</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

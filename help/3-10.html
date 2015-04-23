@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>部分数据结构</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">部分表的数据结构</div>
+<div class="text">
+  <p><strong>1、内容表content_站点id，如content_1，表示站点1的内容表</strong><br />
+  </p>
+  <table cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="100"> id</td>
+        <td> 内容id，自增</td>
+      </tr>
+      <tr>
+        <td> catid</td>
+        <td> 栏目id</td>
+      </tr>
+      <tr>
+        <td> modelid</td>
+        <td> 模型id</td>
+      </tr>
+      <tr>
+        <td> title</td>
+        <td> 文档标题</td>
+      </tr>
+      <tr>
+        <td> thumb</td>
+        <td> 缩略图</td>
+      </tr>
+      <tr>
+        <td> keywords</td>
+        <td> 关键词，小写分号&quot;,&quot;分隔<br /></td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>文档简介，描述<br /></td>
+      </tr>
+      <tr>
+        <td>url</td>
+        <td>内容地址<br /></td>
+      </tr>
+      <tr>
+        <td>listorder</td>
+        <td>排序值<br /></td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>状态，1：通过，2：拒绝，3：待审，0：回收站，查询数据时只需匹配该字段不等于0即可<br /></td>
+      </tr>
+      <tr>
+        <td>hits</td>
+        <td>浏览量<br /></td>
+      </tr>
+      <tr>
+        <td>userid</td>
+        <td>发布人id<br /></td>
+      </tr>
+      <tr>
+        <td>username</td>
+        <td>发布人用户名<br /></td>
+      </tr>
+      <tr>
+        <td>inputtime</td>
+        <td>文档录入时间<br /></td>
+      </tr>
+      <tr>
+        <td>updatetime</td>
+        <td>文档更新时间<br /></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <br />
+  <strong>2、栏目表category</strong><br />
+  <br />
+  <table cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="100"> catid</td>
+        <td> 栏目id</td>
+      </tr>
+      <tr>
+        <td> typeid</td>
+        <td> 栏目类型，1内部栏目，2单页面，3外部链接</td>
+      </tr>
+      <tr>
+        <td> modelid</td>
+        <td> 模型id<br /></td>
+      </tr>
+      <tr>
+        <td> parentid</td>
+        <td> 父级栏目，顶级栏目为0</td>
+      </tr>
+      <tr>
+        <td> child</td>
+        <td> 是否存在子栏目，1存在子栏目，0不存在子栏目<br /></td>
+      </tr>
+      <tr>
+        <td> arrchildid</td>
+        <td> 所有子栏目id，应用于catid in ($cat['arrchildid'])<br /></td>
+      </tr>
+      <tr>
+        <td>catname</td>
+        <td>栏目名称<br /></td>
+      </tr>
+      <tr>
+        <td>image</td>
+        <td>栏目图片<br /></td>
+      </tr>
+      <tr>
+        <td>content</td>
+        <td>单网页内容<br /></td>
+      </tr>
+      <tr>
+        <td>catdir</td>
+        <td>栏目目录<br /></td>
+      </tr>
+      <tr>
+        <td>url</td>
+        <td>栏目地址<br /></td>
+      </tr>
+      <tr>
+        <td>items</td>
+        <td>该栏目的数据量<br /></td>
+      </tr>
+      <tr>
+        <td>ismenu</td>
+        <td>是否在菜单中显示（针对顶级栏目）<br /></td>
+      </tr>
+      <tr>
+        <td>pagesize</td>
+        <td>显示数据量<br /></td>
+      </tr>
+      <tr>
+        <td>setting</td>
+        <td>数组，栏目的相关配置信息，如URL格式，权限等<br /></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <strong>3、会员表member</strong><br />
+  <br />
+  <table cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="100"> id</td>
+        <td> 会员id</td>
+      </tr>
+      <tr>
+        <td> username</td>
+        <td> 会员账号</td>
+      </tr>
+      <tr>
+        <td>email<br /></td>
+        <td>邮箱地址<br /></td>
+      </tr>
+      <tr>
+        <td>nickname<br /></td>
+        <td>会员昵称<br /></td>
+      </tr>
+      <tr>
+        <td>avatar<br /></td>
+        <td>头像地址<br /></td>
+      </tr>
+      <tr>
+        <td>groupid<br /></td>
+        <td>会员组id<br /></td>
+      </tr>
+      <tr>
+        <td>modelid</td>
+        <td>会员模型id<br /></td>
+      </tr>
+      <tr>
+        <td>credits</td>
+        <td>会员积分数量<br /></td>
+      </tr>
+      <tr>
+        <td>regdate</td>
+        <td>注册时间<br /></td>
+      </tr>
+      <tr>
+        <td>regip</td>
+        <td>注册ip<br /></td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>状态，1通过，0未审核<br /></td>
+      </tr>
+      <tr>
+        <td>lastloginip</td>
+        <td>上次登陆ip<br /></td>
+      </tr>
+      <tr>
+        <td>lastlogintime</td>
+        <td>上次登陆时间戳<br /></td>
+      </tr>
+      <tr>
+        <td>loginip</td>
+        <td>本次登陆ip<br /></td>
+      </tr>
+      <tr>
+        <td>logintime</td>
+        <td>本次登陆时间戳<br /></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <br />
+  <strong>4、推荐位数据表position_data</strong><br />
+  <br />
+  <table cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="100"> id</td>
+        <td> 推荐位数据id</td>
+      </tr>
+      <tr>
+        <td>posid</td>
+        <td> 推荐位置id</td>
+      </tr>
+      <tr>
+        <td>thumb</td>
+        <td>缩略图<br /></td>
+      </tr>
+      <tr>
+        <td>title</td>
+        <td>文档标题<br /></td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>文档描述，简介<br /></td>
+      </tr>
+      <tr>
+        <td>url</td>
+        <td>文档地址<br /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

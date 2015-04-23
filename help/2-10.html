@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>会员投稿流程</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">会员投稿流程</div>
+<div class="text">
+  <p><strong>1、会员/游客投稿流程</strong><br /><br />
+  发布稿件 -> 数据存入审核临时表(若会员组权限无需审核则直接发布) -> 管理员审核通过 -> 发布内容表中（同时删除临时表数据）<br />
+  </p>
+  <p><strong>2、会员修改文档流程</strong><br /><br />
+  修改稿件 -> 修改数据存入审核临时表 -> 待管理员审核通过 -> 更新内容表数据(同时删除临时数据)<br />
+  修改稿件 -> 修改数据存入审核临时表 -> 被管理员审核拒绝 -> 修改稿件被退回<br />
+  <p class="code">在修改稿件审核期间，原文档照样能正常访问，待审核通过之后再更新原文档</p>
+  <br />
+  </p>
+  
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

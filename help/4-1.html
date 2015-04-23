@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title></title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS 模板设计指南</div>
+<div class="text">
+  <p><strong>配置</strong>系统模板：后台-&quot;核心管理&quot;-“基本配置”-选择需要修改的“模板风格”下拉框<br />
+模板<strong>默认</strong>目录： /views/模板名称/<br />
+<br />
+<strong>一、模板文件介绍</strong><br />
+1、前端<br />
+网站首页：index.html<br />
+栏目首页：不固定，根据自己设定的模板而定<br />
+栏目列表：不固定，根据自己设定的模板而定<br />
+文档内容：不固定，根据自己设定的模板而定<br />
+单页页面：不固定，默认page.html，根据自己设定的模板而定<br />
+标签页面：keyword.html<br />
+标签列表：tag.html<br />
+搜索页面：search.html<br />
+会员信息：user.html（会员登录信息）<br />
+消息提示：msg.html<br />
+游客投稿：post.html<br />
+<br />
+2、会员<br />
+会员注册：member/register.html<br />
+会员登录：member/login.html<br />
+找回密码：member/repass.html<br />
+激活会员：member/active.html<br />
+绑定会员：member/bang.html<br />
+消息提示：member/msg.html<br />
+会员首页：member/index.html<br />
+会员空间：member/space.html<br />
+收藏夹列：member/favorite.html<br />
+资料修改：member/edit.html<br />
+密码修改：member/password.html<br />
+头像修改：member/avatar.html<br />
+一键登录：member/oauth.html<br />
+内容管理：member/list.html<br />
+发布内容：member/add.html<br />
+附件管理：member/attachment.html<br />
+表单管理：member/form_list.html<br />
+查看表单：member/form_show.html<br />
+短消息列：member/pms_list.html<br />
+发短消息：member/pms_send.html<br />
+读短消息：member/pms_read.html<br />
+待审信息：member/verify.html<br />
+<br />
+<strong>二、模板标签</strong><br />
+标签语法：<a href="javascript:if(confirm(%27http://www.finecms.net/tag/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.finecms.net/tag/%27" tppabs="http://www.finecms.net/tag/" target="_blank">http://www.finecms.net/tag/</a><br />
+变量函数：<a href="javascript:if(confirm(%27http://www.finecms.net/var/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.finecms.net/var/%27" tppabs="http://www.finecms.net/var/" target="_blank">http://www.finecms.net/var/</a><br />
+1、所有标签语法及函数遵循PHP语法结构，不做太多解释了<br />
+2、模板标签灵活，完全支持PHP语句<br />
+3、若有JS标签，请区分“{}”系统标识符（“{ js内容 }”括号内加空格来区分就行）<br />
+<br />
+<strong>三、设计技巧</strong><br />
+1、如何在一个模板中引用另外一个模板或者引用一个公共模板？<br />
+{template 模板名称}: 调用指定“模板名称”，不能加扩展名，支持目录<br />
+<br />
+2、如何根据不同的会员模型来调用不同的会员模板呢？<br />
+<div class="code">{if $memberinfo['modelid']==<strong>123</strong>}<br />
+{template 模型为123的模板}<br />
+{/if}</div><br />
+<br />
+3、如何让文章内容只能让登陆会员查看呢？<br />
+<div class="code">{if $memberinfo}<br />
+查看内容等等<br />
+{else}<br />
+你没有登陆不允许查看<br />
+{/if}</div><br />
+<br />
+4、如何让文章内容只能让某一个会员组查看呢？<br />
+<div class="code">{if $memberinfo['groupid'] == <strong>22</strong>}<br />
+可以让会员组groupid是22的会员查看<br />
+{else}<br />
+无权限查看<br />
+{/if}</div><br />
+<br />
+5、如何让会员发布信息页不同的模型或者栏目使用不同的模板？<br />
+<div class="code">{if $catid==<strong>22</strong>}<br />
+{template member/栏目是22的模板名称}<br />
+{/if}</div><br />
+模型的话就改成$modelid==xxx就ok<br />
+<br />
+<strong>四、注意问题</strong><br />
+1、若修改过模板文件，请务必把默认目录（把&quot;default&quot;改成其他的）更改一下，否则下次升级会被覆盖<br />
+2、不能用记事本等软件编辑，且只能保存编码为utf-8无BOM格式，否则会出大问题<br />
+<br />
+  </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

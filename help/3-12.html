@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">站内搜索参数说明及表单设计</div>
+<div class="text">
+  <p>站内搜索页面地址：index.php?c=content&amp;a=search<br />
+    <br />
+    <strong>一、搜索方式介绍</strong><br />
+1、普通搜索：配置一些时间变量就行，“核心管理”-“基本配置”中设置“搜索”<br />
+2、Sphinx：高效搜索方式，要求懂得配置<br />
+<br />
+<strong>二、搜索表单介绍</strong><br />
+搜索表单最基本的结果如下：<br />
+<div class="code">&lt;form action=&quot;{url(&quot;content/search&quot;)}&quot; name=&quot;formsearch&quot; method=&quot;get&quot;&gt;<br />
+&lt;input name=&quot;c&quot; type=&quot;hidden&quot; value=&quot;content&quot; /&gt;<br />
+&lt;input name=&quot;a&quot; type=&quot;hidden&quot; value=&quot;search&quot; /&gt;<br />
+&lt;input name=&quot;kw&quot; type=&quot;text&quot; /&gt;<br />
+&lt;input name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;搜索&quot; /&gt;<br />
+&lt;/form&gt;</div>
+<p>
+  a，c这两个隐藏域必须存在，kw是搜索关键字（也可以写出username，表示会员名称）<br />
+  当然你也可以加入一些自定义字段搜索（要加自定义字段搜索，必须加上栏目catid或者模型modelid）<br />
+  如：商品作者：&lt;input name=&quot;zuozhe&quot; type=&quot;text&quot; /&gt;（栏目id或者模型id必须有哦&lt;input name=&quot;catid&quot; type=&quot;hidden&quot; value=&quot;栏目的catid值&quot; /&gt;）<br />
+  <br />
+</p>
+<strong>三、相关示例</strong><br />
+1、按照会员来搜索
+<p class="code"> &lt;form action=&quot;{url(&quot;content/search&quot;)}&quot; name=&quot;formsearch&quot; method=&quot;get&quot;&gt;<br />
+&lt;input name=&quot;c&quot; type=&quot;hidden&quot; value=&quot;content&quot; /&gt;<br />
+&lt;input name=&quot;a&quot; type=&quot;hidden&quot; value=&quot;search&quot; /&gt;<br />
+&lt;input name=&quot;username&quot; type=&quot;text&quot; /&gt; //这里就以username作为搜索条件<br />
+&lt;input name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;搜索&quot; /&gt;<br />
+&lt;/form&gt;</p>
+<p>2、在栏目catid=100中按自定义字段aaa来搜索</p>
+<p class="code"> &lt;form action=&quot;{url(&quot;content/search&quot;)}&quot; name=&quot;formsearch&quot; method=&quot;get&quot;&gt;<br />
+&lt;input name=&quot;c&quot; type=&quot;hidden&quot; value=&quot;content&quot; /&gt;<br />
+&lt;input name=&quot;a&quot; type=&quot;hidden&quot; value=&quot;search&quot; /&gt;<br />
+&lt;input name=&quot;catid&quot; type=&quot;hidden&quot; value=&quot;100&quot; /&gt; //栏目=100<br />
+&lt;input name=&quot;aaa&quot; type=&quot;text&quot; /&gt; //aaa是自定义字段<br />
+&lt;input name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;搜索&quot; /&gt;<br />
+&lt;/form&gt;</p>
+<p><strong>四、URL规则配置</strong></p>
+<p>1、伪静态配置，搜索规则必须服务器支持伪静态<br />
+指向地址：index.php?c=content&amp;a=search&amp;id=搜索id&amp;page=分页id<br />
+<br />
+2、规则配置<br />
+<img src="3-11-1.png" tppabs="http://www.dayrui.net/help/images/3-11-1.png" width="545" height="194" /><br />
+必填参数：{id}搜索id，{page}分页id<br />
+举例说明：/search-<strong>99</strong>-page-<strong>10</strong>.html（99是搜索id，10是分页id）<br />
+填写规则：search-{id}-page-{page}.html<br />
+伪  静 态：RewriteRule ^search-([0-9]+)-page-([0-9]+).html$ index.php?c=content&amp;a=search&amp;id=$1&amp;page=$2 [L]</p>
+<p><br />
+  <strong>五、kw匹配字段设置</strong></p>
+<p><img src="3-12-1.png" tppabs="http://www.dayrui.net/help/images/3-12-1.png" width="483" height="141" /><br />
+  通过设置kw参数可匹配多个字段，支持附表字段（<span class="f2">必须存在catid或者modelid参数</span>）<br />
+举例说明<br />
+1、kw匹配title,keywords,description字段，OR关系<br />
+解析为：title like '%$kw%' <strong>OR</strong> keywords like '%$kw%' <strong>OR</strong> description like '%$kw%'<br />
+模糊匹配一般设置OR关系<br />
+2、kw匹配title,content,cname附表字段，OR关系<br />
+解析为：主表.catid=1 AND (主表.title like '%$kw%' <strong>OR</strong> 附表.content like '%$kw%' <strong>OR</strong> 附表.cnamelike '%$kw%')<br />
+匹配附表字段必须有caitd或者modelid<br />
+<strong><br />
+六、支持显示附表字段</strong><br />
+参数：more=1（必须存在catid或者modelid参数）<br />
+举例：?c=content&amp;a=search&amp;catid=2&amp;more=1<br />
+<br />
+<strong>七、自定义搜索排序</strong><br />
+参数：order=字段_desc[,字段_asc] 默认DESC排序（若排序附表字段必须存在catid或者modelid参数）<br />
+举例：<br />
+1、按照hits排序：?c=content&amp;a=search&amp;order=hits_desc<br />
+2、按照栏目3附表字段aaa排序：?c=content&amp;a=search&amp;catid=3&amp;order=aaa（默认为DESC排序）</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

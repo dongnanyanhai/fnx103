@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>字段类别说明</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">字段类别说明</div>
+<div class="text">
+  <p><strong>一、字段类别说明</strong></p>
+  <p>1、单行文本（input）<br />
+    ①、参数说明<br />
+    长度：文本框的width值，以px为单位<br />
+    ②、调用方法<br />
+  {$字段名称}</p>
+  <p>2、多行文本（textarea）<br />
+    ①、参数说明<br />
+    宽度：文本框的width值，以px为单位<br />
+    高度：文本框height值，以px为单位<br />
+    ②、调用方法<br />
+  {$字段名称}</p>
+  <p>3、下拉选择框（select）<br />
+    ①、参数说明<br />
+    选项列表：选项名称1|选项值1 (回车换行)<br />
+    ②、调用方法<br />
+    {$字段名称}</p>
+  <p>4、编辑器（editor）<br />
+    ①、参数说明<br />
+    宽度：编辑器的width值，以百分比为单位<br />
+    高度：编辑器的height值，以px为单位<br />
+    类型：两种模式而已<br />
+    ②、调用方法<br />
+    {$字段名称}</p>
+  <p>5、单选按钮（radio）<br />
+    ①、参数说明<br />
+    选项列表：选项名称1|选项值1 (回车换行)<br />
+    ②、调用方法<br />
+    {$字段名称}</p>
+  <p>6、复选框（checkbox）<br />
+    ①、参数说明<br />
+    选项列表：选项名称1|选项值1 (回车换行)<br />
+    ②、调用方法<br />
+    <div class="code">{php $value=string2array($字段名称);} (v1.7.3及以上版本可直接调用$字段名称)</div><br />
+    返回数组格式的$value，$value是选中的值，可以用loop循环操作它</p>
+  <p>7、单图上传（image）<br />
+    ①、参数说明<br />
+    jpg、gif、png格式图片，不得超过2MB<br />
+    ②、调用方法<br />
+    <div class="code">{thumb($字段名称)}</div></p>
+  <p>8、文件上传（file）<br />
+    ①、参数说明<br />
+    限制格式：多个格式以,号分开，如：zip,rar,tar <br />
+    文件大小：单个文件的大小限制，以MB为单位<br />
+    ②、调用方法<br />
+    <div class="code">{getfile($字段名称)}</div></p>
+  <p>9、多文件上传（files）<br />
+    ①、参数说明<br />
+    限制格式：多个格式以,号分开，如：zip,rar,tar,jpg,png <br />
+    文件大小：单个文件的大小限制，以MB为单位<br />
+    ②、调用方法<br />
+    <div class="code">{php $value=string2array($字段名称);}(v1.7.3及以上版本可直接调用$字段名称)</div>
+    文件地址的数组：$value['file']，<br />
+    文件名称的数组：$value['alt']<br />
+    循环示例如下：<br />
+    <div class="code">{loop $value['file'] $k=&gt;$file}<br />
+    文件地址：{getfile($file)}<br />
+    文件名称：{$value['alt'][$k]}<br />
+    {/loop}</div></p>
+  <p>10、日期时间（date）<br />
+    ①、参数说明<br />
+    显示格式：与PHP的date函数格式一致<br />
+    ②、调用方法<br />
+    {$字段名称}</p>
+  <p>11、联动菜单（linkage）<br />
+    ①、参数说明<br />
+    绑定菜单：选择已经建好的联动菜单<br />
+    联动级别：就是这个菜单有多少级<br />
+    ②、调用方法<br />
+    <div class="code">{php $data=linkagelist(联动菜单keyid, 菜单id);}<br />
+    {loop $data $t}<br />
+    名称：{$t['name']}<br />
+    id号：{$t['id']}<br />
+    子菜单集合：{$t['arrchilds']} (若无子菜单，该值为空).<br />
+    如果该菜单有子菜单就循环调用linkagelist(联动菜单keyid, 子菜单id),依次循环<br />
+    {/loop}</div><br />
+    更多联动菜单功能介绍请参考系统默认模板中的房产模型及联动菜单相关函数介绍</p>
+  <p>12、地图字段（map）<br />
+    ①、参数说明<br />
+    百度KEY：到百度去申请<br />
+    默认城市：可填写中文，如“北京”<br />
+    ②、调用方法<br />
+    <div class="code">{baiduMap(模型id, HTMLdiv的id, $字段, 宽, 高)}</div></p>
+  <p>13、组合字段（merge）<br />
+    这个最简单，不用多介绍，例子很清楚<br />
+    {字段名称}[介绍]，例如：{shi}室，{ting}厅，{wei}卫</p>
+  <p>14、多字段组合（fields）<br />
+    “多字段组合”要区别于“组合字段”<br />
+    可以把“多字段组合”看成一个独立字段，而“组合字段”是由多个独立字段组成<br />
+    按照公交线路举例：<br />
+    建立一个“公交线路”字段，类型为“多字段组合”字段，由“线路”，“车时”，“价钱”等字段组合，用户可以添加多组“公交线路”<br />
+    “多字段组合”可以自由删除，排序选项，实现多栏展示数据<br />
+    调用方式为：<br />
+    <div class="code">{php $value=string2array($“多字段组合”名称);}(v1.7.3及以上版本可直接调用$字段名称)<br />
+    {loop $value $t} //循环多字段<br />
+    值：{$t[字段]}<br />
+    {/loop}</div></p>
+  <p><strong>二、自定义字段表单调用</strong><br />
+    <div class="code">{list action=field modelid=$modelid name=字段名称 value=字段默认值} ... {/list}</div><br />
+    modelid：栏模型id（必选）<br />
+    name：字段名称（必选）<br />
+    value：字段值（可选）<br />
+    返回数据{$t['form']}：用于表单显示（就是一个表单输入框）<br />
+    返回数据{$t['data']}：返回复选框、单选按钮中的选项名称和值（数组类型，若要输出请用loop配合）<br />
+    例：<br />
+    ①、调用模型2中的自定义字段zhiduan（默认值200）的输入表单<br />
+    <div class="code">{list action=field modelid=2 name=zhiduan value=200} {$t['form']} {/list}</div><br />
+    ②、调用模型2中的自定义字段zhiduan（必须是复选框、单选按钮类型）的值<br />
+  <div class="code">{list action=field modelid=2 name=zhiduan}<br />
+    {loop $t['data'] $n=&gt;$v}<br />
+    名称：{$n}，值：{$v}；<br />
+    {/loop}<br />
+    {/list}</div><br />
+    因为$t['data']是数组类型，说以要用loop循环输出，不用解释太多大家都懂<br />
+  </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

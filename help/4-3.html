@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">标签语法说明</div>
+<div class="text">
+  <p> <strong>一、模板变量<br />
+  </strong>1、普通变量：{$finecms}<br />
+  2、数组变量：{$finecms['name']}<br />
+  3、系统常量：{SITE_PATH}</p>
+  <p><strong>二、判断语句<br />
+  </strong>{if $模板变量1 运算符 $模板变量}<br />
+    模板内容1<br />
+    {else}<br />
+    模板内容2<br />
+    {/if}<br />
+    或<br />
+    {if $模板变量1 运算符 $模板变量2}<br />
+    模板内容1<br />
+    {else if $模板变量1 运算符 $模板变量3}<br />
+    模板内容2<br />
+    {else}<br />
+    模板内容3<br />
+    {/if}<br />
+  注：这里的运算符支持：&gt; 、&lt; 、&gt;= 、&lt;=、==、！= 、&lt;&gt; </p>
+  <p><strong>三、循环语句</strong><br />
+    {loop 模板数组 $索引变量=&gt;$值变量}<br />
+    执行语句<br />
+    {/loop}<br />
+    或<br />
+    {loop 模板数组 $值变量}<br />
+    执行语句<br />
+  {/loop} </p>
+<p><strong>四、Template模板</strong><br />
+  {template 模板文件}或者{include 模板文件}，此模板文件一般为共享性模板文件<br />
+  例如：{template header} ，模板文件这里省略了.html的后缀名 </p>
+<p><strong>五、执行函数</strong><br />
+  1、{php PHP语句}，{php echo &quot;1&quot;;}<br />
+  2、{函数名(参数)}，{strlen($str)}相当于&lt;?php echo strlen($str)?&gt; </p>
+<p><strong>六、页面查询</strong><br />
+  ①、{sql:模型名称 执行方法}<br />
+    格式：{sql:user where(&quot;pid=1&quot;)-&gt;order(&quot;uid asc&quot;)-&gt;select();}<br />
+  返回：$return数组</p>
+  <p>②、{plugin:插件名称::表名称 执行方法}<br />
+    格式：{plugin:link::link findAll()}<br />
+  返回：$return数组</p>
+  <p> </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

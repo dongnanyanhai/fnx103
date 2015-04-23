@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS的Model应用</div>
+<div class="text">
+  <p> 模型(Model)是 MVC里的M，模型用于操作数据以及数据相关的业务规则。</p>
+  <p><strong>一、创建模型</strong><br />
+    在项目目录models中新建Model文件(具体如何操作，前面介绍时，已经详细讲述过了)。<br />
+    例如：要建UserModel.php文件(注：Model文件中所有的类必须继承Model基类)。</p>
+  <p class="code"> &lt;?php<br />
+    class UserModel extends Model {<br />
+    public function get_primary_key() {<br />
+    return $this-&gt;primary_key = 'id'; //设置主键<br />
+    }<br />
+    public function get_fields() {<br />
+    return $this-&gt;get_table_fields();<br />
+    }<br />
+    }</p>
+  <p><br />
+    Model文件创建好后，怎么在Controller文件中调用呢？<br />
+    首先对model进行实例化<br />
+    $model = $this-&gt;model('user');<br />
+    如果查询user数据表的所有数据，操作如下：<br />
+    $data = $model-&gt;findAll();<br />
+    上面的例子，用到函数：findAll()，这就是在Model类中封装的函数。<br />
+  </p>
+  <p><strong>二、Model 类所提供的函数及说明。</strong><br />
+    1、from($tabs, $fields) 实现SQL语句中：“select `数据表字段` from 数据表 ”部分的处理。<br />
+    参数说明：<br />
+    $tabs为所要查询的数据表。如果所要查询的数据表为多个(大于1个)，参数要为数组。如：array(''数据表1, '数据表2', ...) ;<br />
+    注：当参数为空时,数据表则默认为当前model所对应的数据表。<br />
+    $fields 为所要查询的数据表字段。默认为“*”，即当此参数为null时，则视为查询数据表所有的字段。<br />
+    如果查询字段为多个，参数要为数组类型。如：array('字段1', '字段2');<br />
+    使用举例：<br />
+    例一、<br />
+    <span class="code">$model-&gt;from('user');</span><br />
+    SQL语句为：select * from user</p>
+  <p>例二、<br />
+    <span class="code">$model-&gt;from('user', array('userid', 'username'));</span><br />
+    显示SQL语句为：SELECT `userid`, `username` FROM `user`</p>
+  <p>例三、<br />
+    <span class="code">$model-&gt;from(array('content', 'user'), array('title', 'username'));</span><br />
+    显示SQL语句为：SELECT `title`, `username` FROM `content`, `user`</p>
+  <p>例四、<br />
+    <span class="code">$model-&gt;from(array('p'=&gt;'content', 'u'=&gt;'user'), array('p.title', 'u.username'));</span><br />
+    显示SQL语句为：<br />
+    SELECT `p`.`title`, `u`.`username` FROM `content` AS `p`, `user` AS `u`<br />
+    注：array('p'=&gt;'content', 'u'=&gt;'user')，这里数组索引为非数字时，则代表SQL语句中的ALIAS(更名)情况。</p>
+  <p>例五、<br />
+    <span class="code">$model-&gt;from(array('p'=&gt;'content', 'u'=&gt;'user'), array('name'=&gt;'p.title', 'u.username'));</span><br />
+    显示SQL语句为：SELECT `p`.`title` AS `name`, `u`.`username` FROM `content` AS `p`, `user` AS `u`</p>
+  <p>例六、<br />
+    对常用SQL函数的支持。</p>
+  <p>(1)、函数count()<br />
+    <span class="code">$model-&gt;from('user', array('total_num'=&gt;'count(`userid`)'));</span><br />
+    显示SQL语句为：SELECT count(`userid`) AS `total_num` FROM `user`</p>
+  <p>(2)、函数avg()<br />
+    <span class="code">$model-&gt;from('user', array('avg_num'=&gt;'avg(`userid`)'));</span><br />
+    显示SQL语句为：SELECT avg(`userid`) AS `avg_num` FROM `user`</p>
+  <p>(3)、函数sum()<br />
+    $model-&gt;from('user', array('num'=&gt;'sum(`userid`)'));<br />
+    显示SQL语句为：SELECT sum(`userid`) AS `num` FROM `user`</p>
+  <p>(4)、函数max()<br />
+    <span class="code">$model-&gt;from('user', array('num'=&gt;'max(`userid`)'));</span><br />
+    显示SQL语句为：SELECT max(`userid`) AS `num` FROM `user`</p>
+  <p>(5)、函数min()<br />
+    <span class="code">$model-&gt;from('user', array('num'=&gt;'min(`userid`)'));</span><br />
+    显示SQL语句为：SELECT min(`userid`) AS `num` FROM `user`</p>
+  <p>(6)、函数distinct()<br />
+    <span class="code">$model-&gt;from('user', 'distinct `userid`');</span><br />
+    显示SQL语句为：SELECT distinct `userid` FROM `user`<br />
+  </p>
+  <p>2、where($where, $value) 用于处理SQL语句中where部分的语句。<br />
+    参数说明：<br />
+    $where:SQL语句的条件语句，参数非空。<br />
+    $value:SQL语句中?的值,参数默认为null。<br />
+    注：当SQL语句中有查询的字段值为字符或字符串时，不要忘记将字符或字符串进行转义。<br />
+    使用举例：</p>
+例一、<br />
+  $model-&gt;where('id=23');<br />
+  echo $model;<br />
+  显示SQL语句为：WHERE `id`=23
+  <p>例二、<br />
+    $model-&gt;where('name=?', 'finecms');<br />
+    或<br />
+    $model-&gt;where('name=\'finecms\'');<br />
+    echo $model;<br />
+  显示SQL语句为：WHERE `name`='finecms'</p>
+  <p>例三、<br />
+    $data = $model-&gt;quote_into('finecms');<br />
+    $model-&gt;where('name=' . $data);<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `name`='finecms'</p>
+  <p>例四、<br />
+    $model-&gt;where('id&gt;6')-&gt;where('name=?', 'finecms');<br />
+    或<br />
+    $model-&gt;where(array('id&gt;6', 'name=?'), 'finecms');<br />
+    或<br />
+    $model-&gt;where(array('id&gt;6', 'name=\'finecms\''));<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `id`&gt;6 AND `name`='finecms'</p>
+  <p>例五、<br />
+    $model-&gt;where('p.id&gt;6')-&gt;where('u.name=?', 'finecms')-&gt;where('p.user_id=u.user_id');<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `p`.`id`&gt;6 AND `u`.`name`='finecms' AND `p`.`user_id`=u.user_id</p>
+  <p>例六、<br />
+    $model-&gt;where('id&lt;=100')-&gt;where('name like ?', 'finecms%');<br />
+    echo $model;<br />
+    显示SQL语句：WHERE `id`&lt;=100 AND `name` LIKE 'finecms%'</p>
+  <p>例七、<br />
+    $model-&gt;where(array('name=?', 'group=?'), 'finecms');<br />
+    echo $model;<br />
+    显示SQL语句：WHERE `name`='finecms' AND `group`='finecms'</p>
+  <p>例八、<br />
+    $model-&gt;where('id between 10 and 20');<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `id` BETWEEN 10 AND 20</p>
+  <p>例九、<br />
+    $model-&gt;where('id in(10, 12, 15)');<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `id` IN(10, 12, 15)</p>
+  <p>例十、<br />
+    $model-&gt;where('match(name, email) against(?)', 'finecms');<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE MATCH (name, email) AGAINST ('finecms')<br />
+    注：本例为全文搜索实例，mysql的MYISAM引擎才支持哦，INNODB引擎不支持全文搜索。<br />
+  </p>
+  <p>3、orwhere($where, $value) 用于处理SQL语句中orwhere部分的语句。<br />
+    参数说明：<br />
+    $where:SQL语句的条件语句，参数非空。<br />
+    $value:SQL语句中?的值,参数默认为null。<br />
+    注：当SQL语句中有查询的字段值为字符或字符串时，不要忘记将字符或字符串进行转义。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;orwhere('id&gt;90')-&gt;orwhere('id&lt;100');<br />
+    echo $model;<br />
+    显示SQL语句为：OR `id`&gt;90 AND `id`&lt;100<br />
+    注：本函数在使用上与where()使用函数完全相同，在本函数的使用上要参考下where()的使用方法。前面有详细的说明。</p>
+  <p>例二、<br />
+    $model-&gt;where('id&gt;30')-&gt;where('id&lt;40')-&gt;orwhere('id&gt;90')-&gt;orwhere('id&lt;100');<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `id`&gt;30 AND `id`&lt;40 OR `id`&gt;90 AND `id`&lt;100<br />
+    注：本函数要与where()一块用，即：在出现orwhre()地方一定要出现where()。<br />
+    不过有where()出现的地方，不一定要有orwhere()。<br />
+    Where()和orwhere()没有前后顺序限制。<br />
+    最后无论这两个函数哪一个最先出现，最后系统还是先处理where(),后出理orwhere()。<br />
+  </p>
+  <p>4、order($order_desc) 完成SQL语句中order部分语句的处理。<br />
+    参数说明：<br />
+    $order_desc是oder语句中排序一个单元，参数非空，支持数组。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;order('id asc');<br />
+    echo $model;<br />
+    显示SQL语句为：ORDER BY `id` ASC</p>
+  <p>例二、<br />
+    $model-&gt;order('p.id asc')-&gt;order('u.name desc');<br />
+    或<br />
+    $model-&gt;order(array('p.id asc', 'u.name desc'));<br />
+    echo $model;<br />
+    显示SQL语句为：ORDER BY `p`.`id` ASC , `u`.`name` DESC<br />
+  </p>
+  <p>5、join($table_name, $where) 用于处理SQL中left join(左关联)语句的处理。<br />
+    参数说明：<br />
+    $table_name为关联的数据表名。参数同前面所讲from()的$tabs参数略同，可以进行alias(更名)操作，不过本参数不支持多个数据表。<br />
+    $where为关联数据表的条件。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;from(array('p'=&gt;'post'),'p.post_title')-&gt;join(array('u'=&gt;'user'), 'p.user_id=`u`.`user_id`');<br />
+    echo $model;<br />
+    显示SQL语句为：SELECT `p`.`post_title` FROM `post` AS `p` LEFT JOIN `user` AS `u` ON `p`.`user_id`=`u`.`user_id`<br />
+  </p>
+  <p>6、group($group_name)<br />
+    用于完成SQL中group by 语句处理。<br />
+    参数说明：<br />
+    $group_name是分组名称。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;group('name');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `name`</p>
+  <p>例二、<br />
+    $model-&gt;group('name')-&gt;group('class');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `name`, `class`</p>
+  <p>例三、<br />
+    $model-&gt;group('p.name')-&gt;group('u.class');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `p`.`name`, `u`.`class`<br />
+  </p>
+  <p>7、having($where, $value) 用于完成SQL语句中having部分的处理。<br />
+    注：本函数一般与group()同用。having的SQL语句用于“限制”group语句的，一般出现在group之后。<br />
+    参数说明：<br />
+    $where为条件语句，与where()中参数相同。可以参考where()来理解。<br />
+    $value为SQL语句中?的值,参数默认为null。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;group('name')-&gt;having('coun(`name`)&gt;2');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `name` HAVING coun(`name`)&gt;2</p>
+  <p>例二、<br />
+    $model-&gt;group('name')-&gt;having('coun(`name`)&gt;2')-&gt;having('coun(`name`)&lt;6');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `name` HAVING coun(`name`)&gt;2 AND coun(`name`)&lt;6</p>
+  <p>例三、<br />
+    $model-&gt;group('team')-&gt;having('team_name=?', 'finecms');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `team` HAVING team_name='finecms'<br />
+  </p>
+  <p>8、orhaving($where, $value) 用于完成SQL语句中orhaving部分的处理。<br />
+    注：本函数一般与having()同用。<br />
+    参数说明：<br />
+    $where为条件语句，与where()中参数相同。可以参考having()来理解。<br />
+    $value为SQL语句中?的值,参数默认为null。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;group('name')-&gt;having('coun(`name`)&gt;2')-&gt;orhaving('coun(`name`)&lt;6');<br />
+    echo $model;<br />
+    显示SQL语句为：GROUP BY `name` HAVING coun(`name`)&gt;2 or coun(`name`)&lt;6<br />
+  </p>
+  <p>9、limit($num1, $num2) 用于完成SQL语句的limit部分的处理。<br />
+    参数说明：<br />
+    $num1, 即SQL中limit 后的第一个数字，用于定义查询显示的起始值。<br />
+    $num2, 即SQL中limit 后的第二个数字，用于定义查询显示多少行数据。默认为null即:本参数可以为空。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;limit(10);<br />
+    echo $model;<br />
+    显示SQL语句为：LIMIT 10</p>
+  <p>例二、<br />
+    $model-&gt;limit(10, 30);<br />
+    echo $model;<br />
+    显示SQL语句为：LIMIT 10, 30<br />
+  </p>
+  <p>10、page_limit($page, $list_num) 用于完成SQL语句的limit部分的处理，常用于有分页情况下的数据查询。<br />
+    参数说明：<br />
+    $page：当前的页数。<br />
+    $list_num：每页所显示数据的行数。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;page_limit(3, 10);<br />
+    echo $model;<br />
+    显示SQL语句为：LIMIT 20, 10<br />
+  </p>
+  <p>11、select($item) 用于完成from(),where()等函数所生成的SQL片段的组装，组装成一个完整理的SQL查询语句，并将其执行，且返回查询信息。<br />
+    参数说明：<br />
+    $item为返回数据的选项，当为true时，则select返回的数据是多维组数组，即返回的为SQL查询语句的全部数据。当为false时，为select查询后第一条数据。默认为true。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $data = $model-&gt;from('centent')-&gt;where('id&gt;27')-&gt;order('id desc')-&gt;limit(10, 20)-&gt;select();<br />
+    print_r($data);<br />
+    显示多行数据(二维数组)。</p>
+  <p>例二、<br />
+    $data = $model-&gt;from('centent')-&gt;where('id&gt;27')-&gt;order('id desc')-&gt;limit(10, 20)-&gt;select(false);<br />
+    print_r($data);<br />
+    显示单行数据(一维数组)。<br />
+  </p>
+  <p>12、quote_into($value) 本函数用来完成字符串的转义的。<br />
+    防止SQL注入，提高程序安全。辅助于where(), orwhere(), having()这三个函数。<br />
+    参数说明：<br />
+    $value：字符串内容。本参数支持数组。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $m = $model-&gt;quote_into(‘wang's book’);<br />
+    echo $where;<br />
+    显示SQL语句为：'wang\'s book'。(函数运行原理极为简，相当于PHP的addslashes()函数操作)。</p>
+  <p>例二、<br />
+    $name = $model-&gt;quote_into('finecms');<br />
+    $model-&gt;where('name='.$name);<br />
+    echo $model;<br />
+    显示SQL语句为：WHERE `name`='finecms'<br />
+  </p>
+  <p>14、主键查询</p>
+  <p>(1)、find($id, $fields = null) 用于查找并返回主键为$id的数据。<br />
+    (注：此主键并非数据表的PRIMARY_KEY，这个主键是相对的，如果没有自定义，则默认为数据表的PRIMARY_KEY。)<br />
+    参数说明：<br />
+    $id为主键的ID，由于这个主键可以自定义，所以此参数也可是字符串。当然也可是数组。参数为数组时，相当于SQL语句中 WHERE IN(参数内容)。<br />
+    $fields：所要查询的数据表字段.默认为全部数据表字段<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $data = $model-&gt;find(23);</p>
+  <p>例二、<br />
+    $data = $model-&gt;find(array(21,23,27));<br />
+    注：本例参数为数组型，返回的数据为多维数组。</p>
+  <p>例三、<br />
+    $model-&gt;primary_key = 'title';<br />
+    $data = $model-&gt;find('\'my god\'');<br />
+    注：本例为主键自定义实例。自定义操作：在本函数调用之前$model-&gt;primary_key = '自定义的主键'；如果参数为字符串，别忘了对参数进行转义(使用quote_into()函数或参数中用\'这种方式)。</p>
+  <p>例四、<br />
+    $data = $model-&gt;find(21, array('name', 'age', 'addr'));</p>
+  <p>例五、<br />
+    $data = $model-&gt;find(array(21,23,27), array('name', 'age'));<br />
+  </p>
+  <p>(2)、findAll($fields = null, $order_asc = true，$offset = null, $count = null)<br />
+    以数据表主键为顺序查询并返回数据表内所有数据。本函数获取数据表全部数据时只适用于数据表数据量不大时。如果数据表的数据是千万级1TB以上。数据全返回，程序运行消耗时间不说，单单服务器内存的占用也是吃不消的，所以在数据表数据量不大时用于调试程序所用(对开发者建议)，要么$offset,$count参数赋上值则相当于SQL中的limit $offset, $count。本函数与find()一样，也支持order及主键的自定义，操作函数与find()相同。对此如不明白，可以参考find()的用法。<br />
+    参数说明：<br />
+    $fields：所要查询的数据表字段.默认为全部数据表字段<br />
+    $order_asc：数据排序,若为true时为ASC,为false时为DESC, 默认为ASC<br />
+    $offset: limit 启起ID<br />
+    $count: limit 显示的行数<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $data = $model-&gt;findALL();</p>
+  <p>例二、<br />
+    $model-&gt;primary_key = 'title';<br />
+    $data = $model-&gt;findALL();</p>
+  <p>例三、<br />
+    $data = $model-&gt;findALL(array('name', 'tel'), false);</p>
+  <p>例四、<br />
+    $data = $model-&gt;findALL('name', false);</p>
+  <p>例五、<br />
+    $data = $model-&gt;findALL(array('name', 'tel'), false, 5, 10);</p>
+  <p>例六、<br />
+    $data = $model-&gt;findALL(array('name', 'tel'), false, 10);<br />
+  </p>
+  <p>15、根据一个查询条件，获取数据</p>
+  <p>(1)、getOne($where, $value = null, $fields = null) 查询并获取满足$where条件的第一行数据。<br />
+    参数说明：<br />
+    $where:查询条件，参数类似于where()函数。如果参数里有字符串，不要忘记对其进行转义。参数非空，支持数组。<br />
+    $value:默认为null, 是查询条件中?的替换数据。具体使用，请参考前面所讲的where()的使用方法<br />
+    $fields：所要查询的数据表字段.默认为全部数据表字段。注：当本参数为true时，本方法刚返回当前数据表的主键值<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $data = $model-&gt;getOne('title=\'my god\'');<br />
+    或<br />
+    $data = $model-&gt;getOne('title=?', 'my god');</p>
+  <p>例二、<br />
+    $where = $model-&gt;quote_into( 'my god');<br />
+    $data = $model-&gt;getOne('title='.$where);</p>
+  <p>例三、<br />
+    $data = $model-&gt;getOne(array('id'&gt;13, 'name=?'), 'finecms');</p>
+  <p>例四、<br />
+    $data = $model-&gt;getOne('name=?', 'finecms', array('info', 'group'));</p>
+  <p>例五、<br />
+    $data = $model-&gt;getOne('name=?', 'finecms', 'info');</p>
+  <p>(2)、getAll($where, $value=null, $fields = null, $order = null, $offset = null, $count = null)<br />
+    查询并获取满足$where条件的所有数据。<br />
+    参数说明：<br />
+    $where是查询条件，参数类似于where()函数的。如果参数里有字符串，不要忘记对其进行转义。参数非空，支持数组<br />
+    $value是查询条件中?的替换数据，默认为null。<br />
+    $fields：所要查询的数据表字段.默认为全部数据表字段<br />
+    $order是数据显示的排序条件，默认为null。<br />
+    $offset: limit 启起ID<br />
+    $count: limit 显示的行数<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $data = $model-&gt;getAll('title=?', 'my god');<br />
+    或<br />
+    $data = $model-&gt;getAll('title=\'my god\'');</p>
+  <p>例二、<br />
+    $where = $model-&gt;quote_into('my god');<br />
+    $data = $model-&gt;getAll('title='.$where);</p>
+  <p>例三、<br />
+    $data = $model-&gt;getAll(array('post_id&gt;23', 'title=?'), 'finecms', null, 'post desc');</p>
+  <p>例四、<br />
+    $data = $model-&gt;getAll(array('post_id&gt;23', 'title=?'), 'finecms', array('desc', 'author'));</p>
+  <p>例五、<br />
+    $data = $model-&gt;getAll(array('post_id&gt;23', 'title=?'), 'finecms', null, 'post desc', 5, 10);</p>
+  <p>例六、<br />
+    $data = $model-&gt;getAll(array('post_id&gt;23', 'title=?'), 'finecms', null, 'post desc', 10);</p>
+  <p>(3)、count($table_name, $field_name = null, $where = null, $value = null)<br />
+    获取某数据表满足一定条件的数据的总行数.注：分页程序常用<br />
+    参数说明：<br />
+    $table_name:所要查询的数据表名<br />
+    $field_name:所要查询字段名称,当参数为null时，系统默认为当前数据表的主键<br />
+    $where :查询条件<br />
+    $value :数值（数据表某字段所对应的数据，通常都为字符串或字符）</p>
+  <p>使用举例：</p>
+  <p>例一、<br />
+    $total_num = $model-&gt;count('centent', 'id', 'id&gt;1000');</p>
+  <p>例二、<br />
+    $total_num = $model-&gt;count('centent', 'id', 'username=?', 'finecms');</p>
+  <p>&nbsp;</p>
+  <p>16、对数据表的UID操作(update、insert、delete)</p>
+  <p>(1)、update($data, $where, $params = null)<br />
+    对model所对应的数据表进行更改操作。本函数均对所要update的数据进行了addslashes()转义，有效防止SQL注入。<br />
+    参数说明：<br />
+    $data为所要更改的内容，为数组型。参数数组中数组索引为数据表字段，数组的值为所要写入的内容。如果想更改一行数据，字段1为a, 字段2为b，那参数应为：array('字段1'=&gt;'a', '字段2'=&gt;'b');当参数数组有索引不是数据表中的字段时，程序执行时则对其进行过滤掉，不加利用。<br />
+    $where为满足的条件。参数格式与whrer()，getOnet()等函数的参数相同。<br />
+    $params为替换$where里?的替换数据,默认为null<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $update_array = array('title'=&gt;'DEMO', 'content'=&gt;'IT IS A DEMO');<br />
+    $model-&gt;update($update_array, 'id=5');</p>
+  <p>例二、<br />
+    $update_array = array('title'=&gt;'DEMO', 'content'=&gt;'IT IS A DEMO');<br />
+    $model-&gt;update($update_array, 'name=?', 'dayrui');</p>
+  <p>例三、<br />
+    $update_array = array('hits'=&gt;'hits+1');<br />
+    $model-&gt;update($update_array, 'name=?', 'dayrui');<br />
+    hits字段值加1。</p>
+  <p>(2)、insert($data)<br />
+    向model所对应的数据表插入一条数据信息。本函数均对所要insert的数据进行了addslashes()转义，有效防止SQL注入。<br />
+    参数说明：<br />
+    $data为所要写入的数据，数组型。参数数组中数组索引为数据表字段，数组的值为所要写入的内容。<br />
+    如果想写入一行数据，字段1为a, 字段2为b，那参数应为：array('字段1'=&gt;'a', '字段2'=&gt;'b');<br />
+    返回自增ID值。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $insert_array = array('title'=&gt;'DEMO', 'content'=&gt;'IT IS A DEMO');<br />
+    $insert_id = $model-&gt;insert($insert_array);<br />
+  </p>
+  <p>(3)、delete($where, $value = null)<br />
+    从model所对应的数据表中删除满足参数条件的数据。<br />
+    参数说明：<br />
+    $where为删除数据的条件，参数格式，参考where()的参数。同样如果参数中有字符，不应忘记对其转义。<br />
+    $value为删除数据的条件中?的替换数据，默认为null。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $model-&gt;delete('id=5');</p>
+  <p>例二、<br />
+    $where = $model-&gt;quote_into('dayrui');<br />
+    $model-&gt;delete('name='.$where);</p>
+  <p>例三、<br />
+    $model-&gt;delete('name=?', 'dayrui');</p>
+  <p>17、execute($sql, $all_rows = true)<br />
+    执行一个SQL查询语句，并返回查询的数据。如果你认为前面那些对数据库进行操作的函数不够灵活，满足不了需要，这个函数至少弥补了这点不足。使用SQL语句操作数据表，灵活机动，随心所欲。<br />
+    参数说明：<br />
+    $sql为所要执行的SQL语句。注：参数只支持select的查询语句，其它的操作，函数会报错。<br />
+    $all_rolws：返回的数据是否为全部数据，当为true时返回全部数据，当为false时，返回第一行数据，默认为true。<br />
+    注:本函数对于常用的SQL语言进行判断,如果以select开头的SQL语句,则返回查询的数据,对于update,insert,delete等则执行,仅返回执行结果,但对于show tables、desc tablename之类的查询语句,不能智能判断出，所以需要第三个参数。当第三个参数为true时,本函数将按查询语句执行。<br />
+    使用举例：</p>
+  <p>例一、<br />
+    $sql = &quot;select u.* from user as u, content as p where u.userid=p.userid and p.id&lt;15 order by p.id desc limit 0, 10&quot;;<br />
+    $data = $model-&gt;execute($sql);<br />
+    返回多维数组。</p>
+  <p>例二、<br />
+    $sql = &quot;select u.* from user as u, content as p where u.userid=p.userid and p.id&lt;15 order by p.id desc limit 0, 10&quot;;<br />
+    $data = $model-&gt;execute($sql, false);<br />
+    返回一条数据。</p>
+  <p>例三、<br />
+    $sql = &quot;update content set title='demo' where id=5&quot;;<br />
+    $model-&gt;execute($sql);</p>
+  <p>18、get_table_prefix() 获取数据表前缀。<br />
+    使用举例：<br />
+    $table_prefix = $this-&gt;get_table_prefix();</p>
+  <p>19、query($sql) 执行一条sql语句。<br />
+    使用举例：<br />
+    $this-&gt;query('update user set status=1 where userid=1');  </p>
+  <p></p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

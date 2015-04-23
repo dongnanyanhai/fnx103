@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">自定义字段类别</div>
+<div class="text">
+  <p class="code"> 自定义字段的相关函数一般放在/extensions/custom.php文件中，因为是自定义的，此文件不影响升级，大家都懂</p>
+  <p><strong>一、函数介绍</strong><br />
+    1、字段类别函数：_formtype()，格式array('字段英文名字'=&gt;'字段提示名称')<br />
+    2、字段配置函数：form_字段英文名字($setting=null)<br />
+  3、表单输出函数：content_字段英文名字($name, $content=null, $field=null)</p>
+  <p><strong>二、举例说明</strong><br />
+    1、建立一个文本框字段（名称为test）<br />
+  ①、字段类别函数</p>
+  <p class="code"> function _formtype() {<br />
+   &nbsp; return array(<br />
+   &nbsp;&nbsp; 'test' =&gt; '测试', //前者test表示字段的英文名称，后者表示字段的描述名称<br />
+   &nbsp; );<br />
+    }</p>
+  <p><br />
+  ②、字段配置函数</p>
+  <p class="code"> function form_test($setting=null) {<br />
+    $size = isset($setting['size']) ? $setting['size'] : 150; //如果不填写长度，默认为150<br />
+    $default = isset($setting['default']) ? $setting['default'] : ''; //默认值，都能看懂<br />
+    return '<br />
+  &lt;table width=&quot;98%&quot; cellspacing=&quot;1&quot; cellpadding=&quot;2&quot;&gt;<br />
+  &lt;tbody&gt;<br />
+  &lt;tr&gt;<br />
+  &lt;td width=&quot;100&quot;&gt;文本框长度 ：&lt;/td&gt;<br />
+  &lt;td&gt;&lt;input type=&quot;text&quot; class=&quot;input-text&quot; size=&quot;10&quot; value=&quot;' . $size . '&quot; name=&quot;setting[size]&quot;&gt;&lt;font color=&quot;gray&quot;&gt;px&lt;/font&gt;&lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+  &lt;tr&gt;<br />
+  &lt;td&gt;默认值 ：&lt;/td&gt;<br />
+  &lt;td&gt;&lt;input type=&quot;text&quot; class=&quot;input-text&quot; size=&quot;30&quot; value=&quot;' . $default . '&quot; name=&quot;setting[default]&quot;&gt;&lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+  &lt;/tbody&gt;<br />
+  &lt;/table&gt;';<br />
+    }</p>
+  <p><br />
+  ③、表单输出函数</p>
+  <p class="code"> function content_test($name, $content=null, $field=null) {<br />
+  
+	$setting	= isset($field['setting']) ? string2array($field['setting']) : $field;	//配置<br />
+	$required	= isset($field['not_null']) && $field['not_null'] ? ' required' : '';	//必填字段<br />
+	//$errortips	= isset($field['errortips']) && $field['errortips'] ? ' placeholder="' . $field['errortips'] . '"' : '';	//错误提示<br />
+	$pattern	= isset($field['pattern']) && $field['pattern'] ? ' pattern="' . $field['pattern'] . '"' : '';	//正则判断<br />
+    $content = is_null($content[0]) ? get_content_value($setting['default']) : $content[0]; //字段内容，固定值<br />
+    return '&lt;input type=&quot;text&quot; value=&quot;' . $content . '&quot; class=&quot;input-text&quot; name=&quot;data[' . $name . ']&quot; width=' . $setting['size']. '&gt;'; //表单Name值格式为data[字段名称]<br />
+    }</p>
+  <p><br />
+    2、建立一个读取会员组表中的数据（名字为membergroup）<br />
+  ①、字段类别函数</p>
+  <p class="code"> function _formtype() {<br />
+    return array(<br />
+    'test' =&gt; '测试', //前者test表示字段的英文名称，后者表示字段的描述名称<br />
+    'membergroup' =&gt; '会员组', //前者membergroup表示字段的英文名称，后者表示字段的描述名称<br />
+    );<br />
+    }</p>
+  <p><br />
+  ②、字段配置函数</p>
+  <p class="code"> function form_membergroup($setting=null) {<br />
+    $default = isset($setting['default']) ? $setting['default'] : ''; //默认值，都能看懂<br />
+    //调用会员组表中的数据<br />
+    $model   = Controller::model('member_group');//实例化会员组模型<br />
+    $data    = $model-&gt;getAll(1);//获取会员组表中的全部数据，用于设置默认值<br />
+    $select  = '&lt;select name=&quot;setting[default]&quot;&gt;&lt;option&gt; -- &lt;/option&gt;';<br />
+    foreach ($data as $t) {<br />
+    $selected = $default == $t['id'] ? 'selected' : '';<br />
+    $select  .= '&lt;option value=&quot;' . $t['id'] . '&quot; ' . $selected . '&gt; ' . $t['name'] . ' &lt;/option&gt;';<br />
+    }<br />
+    $select .= '&lt;/select&gt;';<br />
+    return '<br />
+  &lt;table width=&quot;98%&quot; cellspacing=&quot;1&quot; cellpadding=&quot;2&quot;&gt;<br />
+  &lt;tbody&gt;<br />
+  &lt;tr&gt;<br />
+  &lt;td width=&quot;100&quot;&gt;默认会员组 ：&lt;/td&gt;<br />
+  &lt;td&gt;' . $select . '&lt;/td&gt;<br />
+  &lt;/tr&gt;<br />
+  &lt;/tbody&gt;<br />
+  &lt;/table&gt;';<br />
+    }</p>
+  <p><br />
+  ③、表单输出函数</p>
+  <p class="code"> function content_membergroup($name, $content=null, $field=null) {<br />
+  $setting	= isset($field['setting']) ? string2array($field['setting']) : $field;	//配置<br />
+	$required	= isset($field['not_null']) && $field['not_null'] ? ' required' : '';	//必填字段<br />
+	//$errortips	= isset($field['errortips']) && $field['errortips'] ? ' placeholder="' . $field['errortips'] . '"' : '';	//错误提示<br />
+	$pattern	= isset($field['pattern']) && $field['pattern'] ? ' pattern="' . $field['pattern'] . '"' : '';	//正则判断<br />
+    $content = is_null($content[0]) ? get_content_value($setting['default']) : $content[0]; //字段内容，固定值<br />
+    //调用会员组表中的数据<br />
+    $model   = Controller::model('member_group');//实例化会员组模型<br />
+    $data    = $model-&gt;getAll(1);//获取会员组表中的全部数据，用于设置默认值<br />
+    $select  = '&lt;select name=&quot;data[' . $name . ']&quot;&gt;&lt;option&gt; -- &lt;/option&gt;';//表单Name值格式为data[字段名称]<br />
+    foreach ($data as $t) {<br />
+    $selected = $content == $t['id'] ? 'selected' : '';<br />
+    $select  .= '&lt;option value=&quot;' . $t['id'] . '&quot; ' . $selected . '&gt; ' . $t['name'] . ' &lt;/option&gt;';<br />
+    }<br />
+    $select .= '&lt;/select&gt;';<br />
+    return $select;<br />
+    }</p>
+  <p><br />
+    ④、效果预览<br />
+    添加字段时：<br />
+  <img src="5-6-1.png" tppabs="http://www.dayrui.net/help/images/5-6-1.png" width="368" height="185" /></p>
+  <p>发布内容时： <br />
+  <img src="5-6-2.png" tppabs="http://www.dayrui.net/help/images/5-6-2.png" width="380" height="264" /></p>
+  <p class="code">就像示例2，自定义字段类别支持表数据显示，当然也能自动将数据插入表单，完全支持自定义，只要你想要FineCMS就能帮你实现</p>
+<p></p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">系统变量介绍</div>
+<div class="text">
+  <p> <strong>一、通用变量</strong></p>
+  <p> 1、{SITE_PATH}：不带域名的网站地址<br />
+2、{SITE_URL}：带域名的网站地址<br />
+3、{CMS_NAME}：软件名称<br />
+4、{CMS_VERSION}：软件版本<br />
+5、{CMS_UPDATE}：更新时间<br />
+6、{SITE_THEME}：前台风格路径<br />
+7、{ADMIN_THEME}：后台风格路径<br />
+8、{EXT_PATH}：扩展目录路径<br />
+9、{LANG_PATH}：语言目录路径<br />
+10、{$数组键名}：网站配置信息（config.ini.php），如{$SITE_NAME}<br />
+  11、数组{$cats}：所有栏目数组（{$cats[栏目ID]}）<br />
+  12、{$meta_title}：网页title标题<br />
+  13、{$meta_keywords}：网页关键词<br />
+  14、{$meta_description}：网页描述信息<br />
+  15、{$indexc}：是否是首页index<br />
+  16、{$param[参数名称]}：用于接收URL参数<br />
+  17、{$memberinfo}：当前登陆会员的信息，数组格式<br />
+  18、{$membermodel}：会员模型数组<br />
+  19、{$membergroup}：会员组数组<br />
+  20、{$sites}：多站点数组<br />
+  21、{$siteid}：当前站点的id<br />
+  </p>
+<p> </p>
+  <p><strong>二、栏目列表变量</strong></p>
+  <p> 1、{$page}：当前栏目的页数<br />
+2、{$arrchilds}：内部栏目的子栏目集（用于栏目列表查询list）<br />
+3、{$pageurl}：栏目分页地址格式（用于分页）<br />
+ 4、{$catid}：栏目id<br />
+5、{$catname}：栏目名称<br />
+... 自动分析category表中字段<br />
+  </p>
+<p><strong>三、搜索列表变量</strong></p>
+  <p> 1、{$searchdata}：搜索结果集<br />
+  2、{$searchpage}：搜索分页<br />
+3、{$kw}：关键字  <br />
+4、{$searchnums}：搜索结果总数<br />
+  5、{$modelid}： 搜索模型id<br />
+  6、{$catid}： 搜索栏目id</p>
+<p><strong>四、内容页变量</strong></p>
+  <p> 1、{$cat}：当前栏目信息<br />
+  2、{$page}：分页id<br />
+3、{$prev_page}：上一篇数据<br />
+4、{$next_page}：下一篇数据<br />
+5、{$pageurl}：分页格式<br />
+6、{$contentpage}：内容分页（多维数组[分页id=&gt;对应URL地址]）<br />
+... 自动分析content表与对应附表中字段 </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

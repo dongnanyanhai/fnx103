@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" class="off">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>{$sites[$siteid]['SITE_NAME']}-{lang('admin')}</title>
+<link href="{ADMIN_THEME}images/index.css" rel="stylesheet" type="text/css" />
+<link href="{ADMIN_THEME}images/dialog.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{ADMIN_THEME}js/jquery.min.js"></script>
+<script type="text/javascript" src="{ADMIN_THEME}js/dialog.js"></script>
+<script type="text/javascript" src="{ADMIN_THEME}js/iframeTools.js"></script>
+<style type="text/css">
+.objbody{overflow:hidden}
+</style>
+</head>
+<body scroll="no" class="objbody">
+<div class="header">
+	<div class="logo lf"><a href="{SITE_PATH}" target="_blank"><span class="invisible">FineCMS</span></a></div>
+    <div class="rt-col">
+    	<div class="tab_style white cut_line text-r">
+			<!-- <a href="http://www.dayrui.com" target="_blank">{lang('a-com-12')}</a><span>|</span>
+			<a href="http://www.finecms.net" target="_blank">{lang('a-com-13')}</a><span>|</span> -->
+			<a href="/help/" target="_blank">{lang('a-com-14')}</a>
+        </div>
+    </div>
+    <div class="col-auto">
+    	<div class="log white cut_line">
+			{lang('a-com-15')}！{$userinfo['username']}&nbsp;{if $userinfo['realname']}({$userinfo['realname']}){/if}<span>|</span>
+			<a href="javascript:;" onClick="logout();">[{lang('a-com-16')}]</a><span>|</span>
+			<a href="{$site_url}{SITE_PATH}index.php" target="_blank" id="site_homepage">[{$sites[$siteid]['SITE_NAME']}] {lang('a-com-17')}</a>
+    	</div>
+        <ul class="nav white" id="top_menu">
+        {loop $menu['top'] $k=>$t}
+			<li id="_M{$k}" class="{if $k==0}on{/if} top_menu">
+				<a href="javascript:_M({$k},{$t['select']},'{$t['url']}','{lang($t['name'])}')" hidefocus="true" style="outline:none;">{lang($t['name'])}</a>
+			</li>
+		{/loop}
+		{if count($sites)>1 && $userinfo['site']==0}	<li class="tab_web"><a href="javascript:;" class=""><span>{lang('a-sit-18')}</span></a></li>{/if}
+        </ul>
+    </div>
+</div>
+<div id="content">
+	<div class="col-left left_menu">
+    	<div id="Scroll">
+			<div id="leftMain"></div>
+		</div>
+        <a href="javascript:;" id="openClose" style="outline-style: none; outline-color: invert; outline-width: medium;" hideFocus="hidefocus" class="open" title="open/close"><span class="hidden">open</span></a>
+    </div>
+	<div class="col-1 lf cat-menu" id="display_center_id" style="display:none" height="100%">
+	<div class="content">
+        	<iframe name="center_frame" id="center_frame" src="" frameborder="false" scrolling="auto" style="border:none" width="100%" height="auto" allowtransparency="true"></iframe>
+            </div>
+        </div>
+    <div class="col-auto mr8">
+		<div class="crumbs">
+			<div class="shortcut cu-span">
+				<a href="{url('admin/index/main')}" target="right"><span>{lang('a-men-8')}</span></a>
+				<a href="{url('admin/index/cache')}" target="right"><span>{lang('a-men-19')}</span></a>
+				<a href="{url('admin/index/updatemap')}" target="right"><span>{lang('a-men-53')}</span></a>
+			</div>
+			{lang('a-com-18')}：<span id="current_pos"></span>
+		</div>
+    	<div class="col-1">
+        	<div class="content" style="position:relative; overflow:hidden">
+                <iframe name="right" id="rightMain" src="{url('admin/index/main')}" frameborder="false" scrolling="auto" style="border:none; margin-bottom:30px" width="100%" height="auto" allowtransparency="true"></iframe>
+                <div class="fav-nav">
+					&copy; 2011-{date('Y')}&nbsp;&nbsp;<strong><a class="fine-cms" href="#" target="_blank">FineCMS X</a></strong>&nbsp;v{CMS_VERSION} 
+					(Update:{CMS_UPDATE})<span id="finecms_version"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
+        	</div>
+        </div>
+    </div>
+</div>
+<div class="tab-web-panel hidden" style="position:absolute; z-index:999; background:#fff">
+<ul>
+{loop $sites $sid=>$t}
+	<li style="margin:0"><a href="{url('admin', array('siteid'=>$sid))}">{$t['SITE_NAME']}</a></li>
+{/loop}
+</ul>
+</div>
+<div style="display:none;">
+   {loop $menu['top'] $k=>$t}
+   <div id="DIV_M{$k}">
+    {loop $menu['list'][$k] $name=>$n}
+    <h3 class="f14"><span class="switchs cu on"></span>{lang($name)}</h3>
+    <ul>
+    {loop $n $id=>$v}
+      <li id="_MP{$id}" class="sub_menu"><a {if isset($v['url']) && $v['url']}href="javascript:_MP({$id},'{$v['url']}', '{php echo isset($v['clz']) ? $v['clz'] : 0;}');"{/if} hidefocus="true" style="outline:none;">{if isset($v['sys'])}{$v['name']}{else}{lang($v['name'])}{/if}</a></li>
+    {/loop}
+    </ul>    
+    {/loop}
+    <script src="{ADMIN_THEME}js/switch.js"></script>
+  </div>
+  {/loop}
+</div>
+<div class="scroll"><a href="javascript:;" class="per" title="↑ {lang('a-mod-165')}" onclick="menuScroll(1);"></a><a href="javascript:;" class="next" title="↓ {lang('a-mod-166')}" onclick="menuScroll(2);"></a></div>
+<!-- <script type="text/javascript" src="http://www.dayrui.com/index.php?c=v1&m=version&id={CMS_VERSION}"></script> -->
+<script type="text/javascript"> 
+if(!Array.prototype.map)
+Array.prototype.map = function(fn,scope) {
+  var result = [],ri = 0;
+  for (var i = 0,n = this.length; i < n; i++){
+	if(i in this){
+	  result[ri++]  = fn.call(scope ,this[i],i,this);
+	}
+  }
+return result;
+};
+$('#DIV_M0').clone().appendTo('#leftMain');
+var getWindowSize = function(){
+return ["Height","Width"].map(function(name){
+  return window["inner"+name] ||
+	document.compatMode === "CSS1Compat" && document.documentElement[ "client" + name ] || document.body[ "client" + name ]
+});
+}
+window.onload = function (){
+	if(!+"\v1" && !document.querySelector) { // for IE6 IE7
+	  document.body.onresize = resize;
+	} else { 
+	  window.onresize = resize;
+	}
+	function resize() {
+		wSize();
+		return false;
+	}
+}
+function wSize(){
+	//这是一字符串
+	var str=getWindowSize();
+	var strs= new Array(); //定义一数组
+	strs=str.toString().split(","); //字符分割
+	var heights = strs[0]-150,Body = $('body');$('#rightMain').height(heights);   
+	//iframe.height = strs[0]-46;
+	if(strs[1]<980){
+		$('.header').css('width',980+'px');
+		$('#content').css('width',980+'px');
+		Body.attr('scroll','');
+		Body.removeClass('objbody');
+	}else{
+		$('.header').css('width','auto');
+		$('#content').css('width','auto');
+		Body.attr('scroll','no');
+		Body.addClass('objbody');
+	}
+	
+	var openClose = $("#rightMain").height()+39;
+	$('#center_frame').height(openClose+9);
+	$("#openClose").height(openClose+30);	
+	$("#Scroll").height(openClose-20);
+	windowW();
+}
+wSize();
+function windowW(){
+	$(".scroll").show();
+}
+windowW();
+//站点下拉菜单
+$(function(){
+	var offset = $(".tab_web").offset();
+	var tab_web_panel = $(".tab-web-panel");
+	$(".tab_web").mouseover(function(){
+			tab_web_panel.css({ "left": +offset.left+4, "top": +offset.top+$('.tab_web').height()+2});
+			tab_web_panel.show();
+			if(tab_web_panel.height() > 200){
+				tab_web_panel.children("ul").addClass("tab-scroll");
+			}
+		});
+	$(".tab_web span").mouseout(function(){ hidden_site_list_1()});
+	$(".tab-web-panel").mouseover(function(){ clearh();$('.tab_web a').addClass('on')}).mouseout(function(){ hidden_site_list_1();$('.tab_web a').removeClass('on')});
+})
+//隐藏站点下拉。
+var s = 0;
+var h;
+function hidden_site_list() {
+	s++;
+	if(s>=3) {
+		$('.tab-web-panel').hide();
+		clearInterval(h);
+		s = 0;
+	}
+}
+function clearh(){
+	if(h)clearInterval(h);
+}
+function hidden_site_list_1() {
+	h = setInterval("hidden_site_list()", 1);
+}
+//左侧开关
+$("#openClose").click(function(){
+	if($(this).data('clicknum')==1) {
+		$("html").removeClass("on");
+		$(".left_menu").removeClass("left_menu_on");
+		$(this).removeClass("close");
+		$(this).data('clicknum', 0);
+		$(".scroll").show();
+	} else {
+		$(".left_menu").addClass("left_menu_on");
+		$(this).addClass("close");
+		$("html").addClass("on");
+		$(this).data('clicknum', 1);
+		$(".scroll").hide();
+	}
+	return false;
+});
+
+function _M(menuid, sid, targetUrl, name) {
+	$("#menuid").val(menuid);
+	$("#bigid").val(menuid);
+	var menu="#DIV_M"+menuid;
+	$('#leftMain').html("");
+	$(menu).clone().appendTo($("#leftMain"));
+	$('.top_menu').removeClass("on");
+	$('#_M'+menuid).addClass("on");
+	//显示左侧菜单，当点击顶部时，展开左侧
+	$(".left_menu").removeClass("left_menu_on");
+	$("#openClose").removeClass("close");
+	$("html").removeClass("on");
+	$("#openClose").data('clicknum', 0);
+	$("#current_pos").data('clicknum', 1);
+	$("#rightMain").attr('src', targetUrl);
+	$('#_MP'+sid).addClass("on fb blue");
+	$('#current_pos').html(name);
+}
+function _MP(id, targetUrl, clz) {
+	var title = $("#_MP"+id).find('a').html();
+	$("#current_pos").html(title);
+	$("#rightMain").attr('src', targetUrl);
+	$('.sub_menu').removeClass("on fb blue");
+	$('#_MP'+id).addClass("on fb blue");
+}
+
+
+(function(){
+    var addEvent = (function(){
+             if (window.addEventListener) {
+                return function(el, sType, fn, capture) {
+                    el.addEventListener(sType, fn, (capture));
+                };
+            } else if (window.attachEvent) {
+                return function(el, sType, fn, capture) {
+                    el.attachEvent("on" + sType, fn);
+                };
+            } else {
+                return function(){};
+            }
+        })(),
+    Scroll = document.getElementById('Scroll');
+    // IE6/IE7/IE8/Opera 10+/Safari5+
+    addEvent(Scroll, 'mousewheel', function(event){
+        event = window.event || event ;  
+		if(event.wheelDelta <= 0 || event.detail > 0) {
+				Scroll.scrollTop = Scroll.scrollTop + 29;
+			} else {
+				Scroll.scrollTop = Scroll.scrollTop - 29;
+		}
+    }, false);
+
+    // Firefox 3.5+
+    addEvent(Scroll, 'DOMMouseScroll',  function(event){
+        event = window.event || event ;
+		if(event.wheelDelta <= 0 || event.detail > 0) {
+				Scroll.scrollTop = Scroll.scrollTop + 29;
+			} else {
+				Scroll.scrollTop = Scroll.scrollTop - 29;
+		}
+    }, false);
+	
+})();
+function menuScroll(num){
+	var Scroll = document.getElementById('Scroll');
+	if(num==1){
+		Scroll.scrollTop = Scroll.scrollTop - 60;
+	}else{
+		Scroll.scrollTop = Scroll.scrollTop + 60;
+	}
+}
+function logout(){
+	if (confirm("{lang('a-com-19')}"))
+	top.location = '{url("admin/login/logout/")}';
+	return false;
+}
+</script>
+</body>
+</html>

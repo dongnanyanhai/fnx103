@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">表单模型和会员扩展模型中的回调函数用法</div>
+<div class="text">
+	<p><strong>一、回调函数的作用</strong></p>
+	<p>默认情况下，我们在提交之后会有如下提示</p>
+	 <img src="5-9-1.png" tppabs="http://www.dayrui.net/help/images/5-9-1.png" />
+	<p>回调函数就是用来自定义这种提示的功能</p>
+	<p><strong>二、使用回调函数</strong></p>
+1、在后台设置中设置“回调函数”<br />
+	<img src="5-9-2.png" tppabs="http://www.dayrui.net/help/images/5-9-2.png" /><br />
+在上面的配置中，我们设置了“mycallback”作为回调函数，下面的“回调函数格式”不用管它，它只是一个格式举例<br /><br />
+2、在自定义函数文件中创建一个叫“mycallback”的函数(要跟你填写的名字一样)
+  <p class="code">
+    function mycallback($msg, $url='', $state=0) { //参数在上面有介绍<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;if ($state = 1) {	//表示成功<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo "&lt;script>alert('成功了：" . $msg . "')&lt;/script>";<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;} else {	//表示失败<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo "&lt;script>alert('失败了：" . $msg . "')&lt;/script>";
+    <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+    }<br />
+	//运用$url参数，你可以设置跳转，这里不举例了，
+    </p>
+	<img src="5-9-3.png" tppabs="http://www.dayrui.net/help/images/5-9-3.png" /><br />
+	<p class="code">示例只有了js提示，当然你也可以使用更多JS特效来运用回调函数</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">系统函数介绍</div>
+<div class="text">
+  <p>1、image($thumb)：返回完整的图片地址 </p>
+  <p>  2、thumb($thumb,宽,高)：如果存在缩略图，优先调用缩略图 </p>
+  <p>  3、strcut($string, 长度, 截取后替代字符)：字符截取 </p>
+  <p>  4、clearhtml($text)：清除HTML格式 </p>
+  <p>  5、catpos(栏目ID, 间隔符)：栏目面包屑导航 </p>
+  <p>  6、plugin(插件名称)：运行插件或者判断内置控制器型插件是否存在 </p>
+  <p>  7、getCatNav($catid)：当前栏目的子栏目或同级栏目菜单 </p>
+  <p>  8、getParentData($catid)：父级栏目的信息 </p>
+  <p>  9、baiduMap($catid/$modelid[说明：v1.7.2及以下使用$catid，后面版本使用$modelid], '地图div的id', 地图值, 宽, 高)：百度地图显示 </p>
+  <p> 10、string2array/array2string：字符串转化为数组/数组转换为字符串 </p>
+  <p> 11、linkagelist(顶级菜单keyid, 显示菜单列表的id)：显示联动菜单子集或者同集，数组格式 </p>
+  <p> 12、linkagedata(顶级菜单keyid, 菜单id)：取得菜单id的数据，数组格式 </p>
+  <p> 13、linkageids(顶级菜单keyid, 菜单id)：取得菜单id的父级菜单 </p>
+  <p> 14、linkagepos(顶级菜单keyid, 菜单id, URL规则, 分隔符)：菜单面包屑导航，URL规则中以{linkageid}匹配菜单id </p>
+  <p> 15、linkageform(顶级菜单keyid, 默认值, 表单名称, 菜单级数)：调用联动菜单表单选择框 </p>
+  <p> 16、getfile($file)：返回文件完整地址 </p>
+  <p> 17、tag_url(关键词)：返回Tag标签地址 </p>
+  <p> 18、get_member_avatar(会员id, 大小120/90/45/30)：调用会员头像 </p>
+  <p> 19、get_member_info(会员id, $more=0)：会员详细详细，若more=1显示自定义字段内容 </p>
+  <p> 20、get_tag_data(关键字字段)：返回关键字数据，数组格式（v1.7.3以上） </p>
+  <p> 21、count_member_size(会员id)：统计会员附件目录大小（v1.7.5以上） </p>
+  <p> 22、form_show_url(表单模型id, 表单数据)：返回表单自定义url地址（v1.7.5以上） </p>
+  <p> 23、html_to_data(数据数组, 模板文件)：用于静态页面，将“数据数组”解析到指定“模板文件”中，Js动态调用它（v1.7.5以上） </p>
+  <p> <em><strong>更多函数请可参考函数库文件：/extensions/function.php</strong></em></p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

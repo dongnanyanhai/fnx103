@@ -1,0 +1,97 @@
+{template header}
+<link href="{ADMIN_THEME}images/table_form.css" rel="stylesheet" type="text/css" />
+    <div class="navigation">
+    您当前位置：<a  href="{SITE_PATH}">首页</a> >> {catpos($catid, ' &gt;&gt;&nbsp;&nbsp;')}
+    </div>
+    <div class="blank10 clear"></div>
+    <!--主体begin-->
+    <div class="downlist">
+        <div class="floatl">
+            <div class="left01">
+                <div class="title">{$title}</div>
+                <div class="downbox1">
+                    <div class="floatl"> <img src="{thumb($thumb)}" height="170" width="160" /></div>
+                    <div class="floatr">
+                        <style type="text/css">
+						td { line-height:20px;}
+						</style>
+						<table width="100%" border="0" class="table-list">
+						<tr>
+						<td>商品价格：<b>￥{$jiage}元</b></td>
+						</tr>
+						<tr>
+						<td>商品总数：<b>{$shuliang}</b></td>
+						</tr>
+						<tr>
+						<td>已经出售：<b>{$chushou}</b></td>
+						</tr>
+						<tr>
+						<td>浏览次数：<script type="text/javascript" src="{url('api/hits',array('id'=>$id,'hits'=>$hits))}"></script></td>
+						</tr>
+						<tr>
+						<td>更新时间：{date("Y-m-d H:i:s", $updatetime)}</td>
+						</tr>
+						<tr>
+						<td>购买数量：<input id="num" name="num" type="text" value="1" style="width:30px;" class="input-text" /></td>
+						</tr>
+						<tr>
+						<td>
+						<input type="button" onclick="buyitem()" value="我要购买" class="button">
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" onclick="addcart()" value="放入购物车" class="button">
+						</td>
+						</tr>
+						</table>
+						<script language="javascript">
+						function buyitem() {
+						var num = $('#num').val();
+						window.location="{url('shop/member/buy', array('catid'=>$catid, 'id'=>$id, 'num'=>''))}"+num;
+						}
+						function addcart() {
+						var num = $('#num').val();
+						window.location="{url('shop/cart/add', array('catid'=>$catid, 'id'=>$id, 'num'=>''))}"+num;
+						}
+						</script>
+                    </div>
+                </div>	
+                <div class="clear blank10"></div>  
+            </div>
+            <div class="clear blank10"></div>
+            <div class="left02">
+               <div class="title">商品描述</div>
+               <div class="downbox2">
+                  {$content}
+               </div>
+            </div>
+        </div>
+        <div class="right">
+            <!--right01 begin-->
+            <div class="right01">
+                <div class="title"><span>最新TOP10</span></div>
+                <div class="right01box">
+                <ul>
+                {list catid=$catid num=10 order=updatetime cache=36000}
+                <li><span class="N{$key+1}"></span><a href="{$t['url']}">{$t['title']}</a></li>
+                {/list}
+                </ul>
+                </div>
+            </div> 
+            <!--right01 end-->
+            <div class="blank10 clear"></div>
+            <!--right01 begin-->
+            <div class="right01">
+               <div class="title"><span>热点TOP10</span></div>
+               <div class="right01box">
+                <ul>
+                {list catid=$catid num=10 order=hits cache=36000}
+                <li><span class="N{$key+1}"></span><a href="{$t['url']}">{$t['title']}</a></li>
+                {/list}
+                </ul>
+               </div>
+            </div> 
+            <!--right01 end-->
+        </div>
+    </div>
+    <!--主体end-->
+    <div class="clear blank10"></div>
+{template footer}

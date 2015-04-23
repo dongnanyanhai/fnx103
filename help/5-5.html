@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>FineCMS使用手册</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">FineCMS插件开发指南</div>
+<div class="text">
+  <p><strong>一、插件类型介绍</strong><br />
+    FineCMS插件目前分为“内置控制器”、“页面嵌入”。<br />
+    1、内置控制器类型插件。<br />
+    有独立的控制器、模型、视图目录，后面将重点介绍该类型插件开发。<br />
+    2、页面嵌入类型插件。<br />
+  该类型插件只包含两个核心文件：run.php和run.html。</p>
+  <p><strong>二、“内置控制器”插件开发介绍</strong></p>
+  <p>1、插件文件及目录结构<br />
+    目录controllers：&nbsp;&nbsp;&nbsp;&nbsp; 插件控制器目录<br />
+    目录models：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件模型目录<br />
+    目录views：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件视图目录<br />
+    文件config.php：&nbsp;&nbsp;&nbsp;&nbsp; 插件配置信息文件<br />
+    文件install.php：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 安装插件执行的SQL语句<br />
+    文件uninstall.php：删除插件执行的SQL语句<br />
+    文件md5.php：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MD5校验文件，官方校验文件<br />
+    文件mark.txt：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 官方发布插件的唯一标示，若是自己开发的插件就不需要该文件</p>
+  <p>2、插件访问路径<br />
+    网站地址/index.php?s=插件名称&amp;c=插件控制器&amp;a=对应的Action。</p>
+  <p>3、插件配置文件config.php规则</p>
+  <p class="code"> &lt;?php<br />
+    return array(<br />
+    'name'    =&gt; '文章踩顶',<br />
+    'author'  =&gt; 'start',<br />
+    'version' =&gt; '1.0',<br />
+    'typeid'   =&gt; 1,<br />
+    'description' =&gt; &quot;必须有Jquery支持，将下面代码放在内容页面中&quot;,<br />
+    'fields' =&gt; array(<br />
+    array('field'=&gt;'dingname', 'name'=&gt;'“顶”名称设置', 'tips'=&gt;'默认“顶一下”。', 'formtype'=&gt;'input', 'setting'=&gt;&quot;array('size'=&gt;'100')&quot;),<br />
+    array('field'=&gt;'cainame',  'name'=&gt;'“踩”名称设置', 'tips'=&gt;'默认“踩一下”。', 'formtype'=&gt;'input', 'setting'=&gt;&quot;array('size'=&gt;'100')&quot;),<br />
+    )<br />
+    );</p>
+  <p><br />
+    该配置文件返回数组格式信息，参数如下介绍。<br />
+    name：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件名称。<br />
+    author：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件作者。<br />
+    version：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件版本。<br />
+    typeid：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1，（固定格式值）。<br />
+    description： 插件描述信息（注意html转义）。<br />
+    fields：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 插件配置参数（若没有配置信息设置，该值可省略）。<br />
+  array('field'=&gt;'字段名称', 'name'=&gt;'字段显示名称', 'tips'=&gt;'提醒文字', 'formtype'=&gt;'字段类型（可参考扩展目录的fields.php文件）', 'setting'=&gt;&quot;该字段类型的配置信息&quot;),</p>
+  <p>4、插件安装/卸载文件规则<br />
+    (1)、安装文件install.php</p>
+  <p class="code"> &lt;?php<br />
+    if (!defined('IN_FINECMS')) exit('');<br />
+    return array(<br />
+  &quot;DROP TABLE IF EXISTS `{prefix}digg`;&quot;,<br />
+  &quot;CREATE TABLE IF NOT EXISTS `{prefix}digg` (<br />
+    `id` mediumint(8) NOT NULL AUTO_INCREMENT,<br />
+    `contentid` mediumint(8) NOT NULL,<br />
+    `title` varchar(100) NOT NULL,<br />
+    `cai` mediumint(8) NOT NULL,<br />
+    `ding` mediumint(8) NOT NULL,<br />
+    `addtime` int(10) NOT NULL,<br />
+    PRIMARY KEY (`id`)<br />
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;&quot;<br />
+    );</p>
+  <p><br />
+  支持多条SQL语句，数据表前缀请用“{prefix}”表示。</p>
+  <p>(2)插件卸载uninstall.php</p>
+  <p class="code"> &lt;?php<br />
+    if (!defined('IN_FINECMS')) exit('');<br />
+    return array(<br />
+  &quot;DROP TABLE IF EXISTS `{prefix}digg`;&quot;<br />
+    );</p>
+  <p><br />
+    5、插件控制器controllers规则<br />
+  (1)、插件公共控制器类Common.php。</p>
+  <p class="code"> &lt;?php<br />
+    /**<br />
+    * 插件控制器公共类<br />
+    */<br />
+    class Plugin extends Common { //继承通用公共类<br />
+  <br />
+    protected $plugin;   //插件模型<br />
+    protected $data;       //插件数据<br />
+    protected $viewpath; //视图目录<br />
+    protected $digg;     //用到的插件模型实例<br />
+  <br />
+    public function __construct() {<br />
+    parent::__construct();<br />
+    $this-&gt;plugin  = $this-&gt;model('plugin');<br />
+    $this-&gt;data    = $this-&gt;plugin-&gt;where('dir=?', $this-&gt;namespace)-&gt;select(false);<br />
+    if (empty($this-&gt;data)) $this-&gt;adminMsg('插件尚未安装', url('admin/plugin'));<br />
+    if ($this-&gt;data['disable']) $this-&gt;adminMsg('插件尚未开启', url('admin/plugin'));<br />
+    $this-&gt;viewpath = SITE_PATH . $this-&gt;site['PLUGIN_DIR'] . '/' . $this-&gt;data['dir'] . '/views/';<br />
+    $this-&gt;assign(array(<br />
+    'viewpath' =&gt; $this-&gt;viewpath,<br />
+    'pluginid' =&gt; $this-&gt;data['pluginid'], <br />
+    ));<br />
+    //以上代码为固定格式，用户在开发插件时，可以直接copy。<br />
+    $this-&gt;digg = $this-&gt;model('digg');  //实例化用到的模型<br />
+    }<br />
+  <br />
+    }</p>
+  <p><br />
+    插件控制器公共类用于实例化该插件用到的模型，或者该插件用到的函数等。<br />
+    (2)、控制器Controller介绍  </p>
+  <p class="code"> &lt;?php<br />
+    class AdminController extends Plugin { //AdminController继承公共插件类<br />
+    <br />
+    public function __construct() {<br />
+    parent::__construct();<br />
+    //Admin控制器进行登录验证<br />
+    if (!$this-&gt;session-&gt;is_set('user_id') || !$this-&gt;session-&gt;get('user_id')) $this-&gt;adminMsg('请登录以后再操作', url('admin/login')); //如果需要管理员登陆验证，就加上这一句。<br />
+    }<br />
+  <br />
+    public function indexAction() {<br />
+    echo &quot;插件indexAction，欢迎使用FineCMS插件。&quot;;<br />
+    }<br />
+    }</p>
+  <p><br />
+    加载视图文件和赋值变量与主控制器不同以外，其他规则与Controller一致。<br />
+    变量赋值：$this-&gt;assign(变量名称, 变量值); $this-&gt;assign(支持数组);<br />
+  加载视图：$this-&gt;display(视图文件名称（不带扩展名）);例如：$htis-&gt;display('test');//插件目录/views/test.php</p>
+  <p>(3)、插件模型models介绍<br />
+    与系统模型规则一致。</p>
+  <p>(4)、插件视图views介绍<br />
+    只支持原生态PHP语句，不支持模板标签。</p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>

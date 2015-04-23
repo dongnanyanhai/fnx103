@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>模型使用说明</title>
+<style type="text/css">
+*{word-break:break-all;font-family:arial,\5b8b\4f53,sans-serif;}
+body{color:#000000;font-size:14px;margin:0;overflow-x:hidden;}
+input,textarea,select,button,td{font-size:14px;}
+img{border:none;}
+a:link,a:visited,a:active{text-decoration:underline;color:#136EC2}
+a:hover{text-decoration:none;}
+.head {border-bottom:#CCCCCC 1px solid;text-align:center;padding:15px;margin:0 10px 0 10px;font-family:黑体;font-size:20px;}
+.text {padding:10px 20px 10px 20px;line-height:150%;}
+.foot {background:#FAFAFA;padding:15px;font-size:12px;}
+.dsn {display:none;}
+.f1 {color:#015D90;padding:0 5px 0 5px;}
+.f2 {color:#FF0000;}
+.code {font-family:Fixedsys,verdana;color:blue;font-size:12px;border:#CAD9EA 1px dotted;padding:5px 10px 5px 10px;background:#F9FCFF;}
+</style>
+</head>
+<body>
+<div class="head">模型使用说明</div>
+<div class="text">
+  <p>模型是FineCMS的核心，下面来介绍如何创建内容模型（<span class="f1">会员模型、表单模型与内容模型一致</span>）<br />
+  </p>
+  <p><strong>一、添加一个模型<br />
+    </strong>后台进入“内容模型”，执行“添加”<br />
+    <img src="3-1.png" tppabs="http://www.dayrui.net/help/images/3-1.png" width="701" height="342" />  <br />
+    模型名称：是你为这个模型取一个名字，比如”文章“，”产品“，”报表“<br />
+    数据表名：不能重复，小写英文即可，比如”news“，”pro“<br />
+    栏目模板、列表模板、内容模板可以自定义，如果不填系统会自动给你取一个名字，<span class="f2">必须是&quot;.html&quot;文件</span> <br />
+关于”关联表单“在表单章节有介绍  </p>
+  <p><strong>二、字段管理，添加字段</strong><br />
+    1、进入“模型列表”，执行“字段管理”，见下图<br />
+    <img src="3-1-1.jpg" tppabs="http://www.dayrui.net/help/images/3-1-1.jpg" width="704" height="302" /><br />
+    2、可以看到默认的系统字段，你可以对默认的系统字段进行修改，见下图<br />
+    <img src="3-1-2.png" tppabs="http://www.dayrui.net/help/images/3-1-2.png" width="669" height="234" />    <br />
+    3、执行菜单上的“添加”，来为当前模型添加字段，见下图<br />
+    <img src="3-1-3.png" tppabs="http://www.dayrui.net/help/images/3-1-3.png" width="784" height="468" /><br />
+    字段别名：当然这个别名指的是字段的标题，比如：文章标题，电话号码等<br />
+    字段名称：只能由英文字母、数字和下划线组成，并且仅能字母开头，不以下划线结尾<br />
+    字段类别：根据实际情况来选择（<a href="3-2.html" tppabs="http://www.dayrui.net/help/3-2.html">实在不懂的可以参考”字段类别说明“这一节</a>）<br />
+    字段类型：根据你的情况来设定字段类别，就行mysql建表字段一样<br />
+    字段长度：由上面的“字段类型”来决定长度，不能超过了该字段类型的最大长度，不了解可以翻翻Mysql手册<br />
+    字段索引：提供了普通、唯一两种索引（不熟悉索引的朋友不要随便选择此项）<br />
+    字段提示：提示这个字段是用来干什么的<br />
+    前台显示：该字段在会员投稿的时候显示，选择了“隐藏”，会员投稿就不会显示了<br />
+  必填字段：这里可以对字段进行有效性验证，比如简单的正则等<br />
+  </p>
+</div>
+<div class="foot"><span style="float:right;"><a href="main.html" tppabs="http://www.dayrui.net/help/main.html">文档首页</a>&nbsp; | &nbsp;<a href="javascript:window.scrollTo(0,0);">返回顶部</a></span></div>
+<br />
+</body>
+</html>
