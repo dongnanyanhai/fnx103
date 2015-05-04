@@ -19,7 +19,7 @@ class InstallController extends Controller {
         define('CMS_VERSION', $cms['version']);
 		define('SITE_THEME',  self::get_theme_url());
 		define('ADMIN_THEME', SITE_PATH . basename(VIEW_DIR) . '/admin/');
-		if (file_exists(APP_ROOT . './cache/install.lock')) {
+		if (file_exists(APP_ROOT . './cache/install.lock') && $_GET['a']!='reinstall') {
 			$this->view->assign('msg', '安装程序已经被锁定，<br/>如果需要解除锁定继续安装<br/>请删除 ./cache/install.lock 文件');
             $this->view->display('../admin/msg');
 	        exit;

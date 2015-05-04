@@ -416,9 +416,15 @@ class View extends Fn_base {
 							$arrchilds	= $cat['arrchilds'];
 							$not_in		= in_array($f, $not) ? 'NOT IN' : 'IN';
 							// $where		.= ' ' . $and_or . ' `' . $_table . '`.`catid` ' . $not_in . ' (' . $arrchilds . ')';
-							// 如果开启了副栏目
+							// 如果开启了副栏目							
 							if($this->cfg['SITE_FNX_CATID2']){
-								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . ' (' . $arrchilds . ')'.' OR `'. $_table . '`.`catid2` LIKE "%' . $fields['catid'] .'%" )';
+								$catid2sql = "";
+								$catid2s = explode(',', $arrchilds);
+								foreach ($catid2s as $key => $value) {
+									$catid2sql .= ' OR find_in_set(' . $value . ',catid2)';
+								}
+								//$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . ' (' . $arrchilds . ')'.' OR find_in_set(' . $fields['catid'] . ',catid2) )';
+								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . ' (' . $arrchilds . ')' . $catid2sql . ' )';
 							}else{
 								$where		.= ' ' . $and_or . ' `' . $_table . '`.`catid` ' . $not_in . ' (' . $arrchilds . ')';
 							}
@@ -427,7 +433,12 @@ class View extends Fn_base {
 							// $where		.= ' ' . $and_or . ' `' . $_table . '`.`catid` ' . $not_in . ' (' . $fields['catid'] . ')';
 							// 如果开启了副栏目
 							if($this->cfg['SITE_FNX_CATID2']){
-								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . ' (' . $fields['catid'] . ')'.' OR `'. $_table . '`.`catid2` LIKE "%' . $fields['catid'] .'%" )';
+								$catid2sql = "";
+								$catid2s = explode(',', $fields['catid']);
+								foreach ($catid2s as $key => $value) {
+									$catid2sql .= ' OR find_in_set(' . $value . ',catid2)';
+								}
+								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . ' (' . $fields['catid'] . ')' . $catid2sql . ' )';
 							}else{
 								$where		.= ' ' . $and_or . ' `' . $_table . '`.`catid` ' . $not_in . ' (' . $fields['catid'] . ')';
 							}
@@ -436,7 +447,7 @@ class View extends Fn_base {
 						    // $where		.= ' ' . $and_or . ' `' . $_table . '`.`catid`' . $not_in . $fields['catid'];
 						    // 如果开启了副栏目
 							if($this->cfg['SITE_FNX_CATID2']){
-								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid`' . $not_in . $fields['catid'].' OR `'. $_table . '`.`catid2` LIKE "%' . $fields['catid'] .'%" )';
+								$where		.= ' ' . $and_or . ' ( `' . $_table . '`.`catid` ' . $not_in . $fields['catid'] .' OR find_in_set(' . $fields['catid'] . ',catid2) )';
 							}else{
 								$where		.= ' ' . $and_or . ' `' . $_table . '`.`catid`' . $not_in . $fields['catid'];
 							}
