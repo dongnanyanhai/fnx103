@@ -236,7 +236,9 @@ class CategoryController extends Admin {
 	        if ($t['typeid'] != 3) {
 				if ($t['child']) $category[$catid]['arrchilds'] = $this->category->child($catid) . $catid;
 				//统计数据
-	            $count[$catid]['items'] = (int)$this->content->_count($site_id, 'catid IN (' . $category[$catid]['arrchilds'] . ') and `status`<>0');
+	            //$count[$catid]['items'] = (int)$this->content->_count($site_id, 'catid IN (' . $category[$catid]['arrchilds'] . ') and `status`<>0');
+	            // 把副栏目的文章也计算进来
+	            $count[$catid]['items'] = (int)$this->content->_count($site_id, '(catid IN (' . $category[$catid]['arrchilds'] . ') OR find_in_set(' . $t['catid'] . ',catid2) ) and `status`<>0');
 	            if ($site_id == $siteid) {
 					$category[$catid]['items'] = $count[$catid]['items'];
 					$this->category->update(array('items' => $count[$catid]['items']), 'catid=' . $catid);
