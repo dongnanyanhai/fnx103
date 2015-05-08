@@ -189,7 +189,7 @@ class NavbarController extends Admin{
 
 		foreach ($navbar as $t) {
 			$navid = $t['navid'];
-			$data[$navid] = $this->navbar_data->where('navid=' . $navid)->order('listorder ASC, id DESC')->select();
+			$data[$navid] = $this->navbar_data->where('navid=' . $navid)->order('listorder ASC, id ASC')->select();
 		}
 
 		// 写入缓存文件
