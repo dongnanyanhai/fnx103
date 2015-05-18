@@ -135,3 +135,13 @@
 		{/if}
 		{/loop}
 	</ul>
+
+
+	// 表单模型可以在后台自定义消息模版
+	// 自定义消息模版可以得到$msg,$url,$state,$data等数据
+	// 前端可以通过提交name="successmsg"或name="failuremsg"的input，来设定消息模版里的$msg值。
+	// $url的值由get参数backurl决定，例如&backurl=http://www.baidu.com 
+	// $state的值为0时，表示提交失败，为1时，表示提交成功
+	// $data为访客提交的表单数据，其中的$data['id']为表单数据在数据库中的id
+	
+	

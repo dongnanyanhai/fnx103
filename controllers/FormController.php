@@ -87,10 +87,19 @@ class FormController extends Common {
 			        	//Log::write($message, 'Error');
 			        }
 				}
-				
-			    $this->callback($data['status'] ? lang('for-8') : lang('for-9'), $backurl, 1);
+				if ($data['successmsg']){
+					$msg = $data['successmsg'];
+				}else{
+					$msg = $data['status'] ? lang('for-8') : lang('for-9');
+				}
+			    $this->callback($msg, $backurl, 1,$data);
 			} else {
-			    $this->callback(lang('for-10'));
+				if ($data['failuremsg']){
+					$this->callback($data['failuremsg']);
+				}else{
+					$this->callback(lang('for-10'));
+				}
+			    
 			}
 		}
 	    $this->view->assign(array(
@@ -180,11 +189,24 @@ class FormController extends Common {
 	/*
 	 * 返回信息处理[callback]
 	 */
-	private function callback($msg, $url = '', $state = 0) {
+	private function callback($msg, $url = '', $state = 0,$data=array()) {
 		if ($this->model['setting']['form']['callback'] && function_exists($this->model['setting']['form']['callback'])) {
-			eval($this->model['setting']['form']['callback'] . '("' . safe_replace($msg) . '", "' . safe_replace($url) . '", ' . $state . ');');
+			eval($this->model['setting']['form']['callback'] . '("' . safe_replace($msg) . '", "' . safe_replace($url) . '", ' . $state . ','.$data.');');
 		} else {
-			$this->msg($msg, $url, 1);
+			// 阿海新增
+			// 后台设定消息处理页面
+			if($this->model['setting']['msgtpl']){
+		        $this->view->assign(array(
+				    'msg'  => $msg,
+					'url'  => $url,
+					'state' => $state,
+					'data' => $data
+				));
+		        //$this->view->display($this->model['setting']['msgtpl']);
+		        $this->view->display(substr($this->model['setting']['msgtpl'], 0, -5));
+			}else{
+				$this->msg($msg, $url, 1);
+			}
 		}
 		exit;
 	}

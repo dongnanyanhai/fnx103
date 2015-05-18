@@ -216,11 +216,12 @@ class FormController extends Admin {
 <!-- ' . lang('a-for-15') . ' -->';
             $form_url  = '{url(\'form/post\', array(\'modelid\'=>' . $this->model['modelid'] . ', \'cid\'=>$id))}   ' . lang('a-for-16');
         }
-		$func_code	= 'function mycallback($msg, $url, $state) {' . PHP_EOL
+		$func_code	= 'function mycallback($msg, $url, $state,$data) {' . PHP_EOL
 				. '	/*' . lang('a-mod-193') . '*/' . PHP_EOL
 				. '}' . PHP_EOL . '$msg ：'. lang('a-mod-194') . PHP_EOL
 				. '$url ：' . lang('a-mod-195') . PHP_EOL
 				. '$state ：'. lang('a-mod-196') . PHP_EOL
+				. '$data ：'. lang('a-fnx-49') . PHP_EOL
 				. lang('a-mod-197');
 		$this->view->assign(array(
 			'join'      => empty($this->join) ? 0 : 1,
