@@ -1348,3 +1348,44 @@ function admin_post_auth($roleid, $data) {
 		return false;
 	}
 }
+
+// 阿海新增
+// 下面函数取自房产模型，主要用做筛选
+//自定义URL函数,网站上线后请将函数放在自定义函数库文件中,就可以随便更改url规则
+function list_url($param, $name=NULL, $value=NULL) {
+	unset($param['page']);
+	if (!is_null($name) && !is_null($value)) {
+		$param[$name] = $value;
+	} elseif (!is_null($name) && is_null($value)) {
+		unset($param[$name]);
+	}
+	/*这是伪静态url地址
+	$url  = SITE_PATH;
+	$url .= 'area-' . $param['area'];
+	$url .= '-room-' . $param['room'];
+	$url .= '-price-' . $param['price'];
+	if ($name=='page')$url .= '-page-' . $value;
+	*/
+	$url  = url('content/list', $param);//动态地址
+	return $url;
+}
+
+// 微信sdk
+function wxjs($appid="",$appsecret=""){
+	$jssdkfile = EXTENSION_DIR."weixinjs/jssdk.php";
+	if (file_exists($jssdkfile)){
+		require_once $jssdkfile;
+		$cfg = App::get_config();
+		if ($appid == ""){
+			$appid = $cfg['SITE_FNX_WXAPPID'];
+		}
+		if ($appsecret == ""){
+			$appsecret = $cfg['SITE_FNX_WXAPPSSCRET'];
+		}
+		$jssdk = new JSSDK($appid, $appsecret);
+		$signPackage = $jssdk->GetSignPackage();
+		return $signPackage;
+	}else{
+		return false;
+	}
+}

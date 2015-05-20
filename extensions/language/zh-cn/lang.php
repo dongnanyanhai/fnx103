@@ -1474,9 +1474,13 @@ return array(
 	'a-fnx-47'  => '消息模板',
 	'a-fnx-48'  => '格式：msg.html',
 	'a-fnx-49'  => '成功提交的数据',
-	'a-fnx-50'  => '无',
-	'a-fnx-51'  => '无',
-	'a-fnx-52'  => '无',
-	'a-fnx-53'  => '无',
-	'a-fnx-54'  => '无',
+	'a-fnx-50'  => '微信JS-SDK AppId',
+	'a-fnx-51'  => '微信JS-SDK AppSecret',
+	'a-fnx-52'  => 'SNS设置',
+	'a-fnx-53'  => '微信SDK',
+	'a-fnx-54'  => '微信JS-SDK说明',
+	'a-fnx-55'  => '无',
+	'a-fnx-56'  => '无',
+	'a-fnx-57'  => '无',
+
 );

@@ -38,7 +38,7 @@
 	// 调用公共头、脚文件：
 	{template header}
 
-	{template menu}
+	{template navbar}
 
 	{template footer}
 
@@ -144,4 +144,4 @@
 	// $state的值为0时，表示提交失败，为1时，表示提交成功
 	// $data为访客提交的表单数据，其中的$data['id']为表单数据在数据库中的id
 	
-	
+	// wxjs()函数可以获得接口信息

@@ -15,12 +15,13 @@
 	<div class="pad-10">
 		<div class="col-tab">
 			<ul class="tabBut cu-li">
-				<li onClick="SwapTab('setting','on','',6,1);" id="tab_setting_1" class="{if $type==1}on{/if}">{lang('a-men-65')}</li>
-				<li onClick="SwapTab('setting','on','',6,2);" id="tab_setting_2" class="{if $type==2}on{/if}">{lang('a-men-14')}</li>
-				<li onClick="SwapTab('setting','on','',6,3);" id="tab_setting_3" class="{if $type==3}on{/if}">{lang('a-men-15')}</li>
-				<li onClick="SwapTab('setting','on','',6,4);" id="tab_setting_4" class="{if $type==4}on{/if}">{lang('a-men-16')}</li>
-				<li onClick="SwapTab('setting','on','',6,5);" id="tab_setting_5" class="{if $type==5}on{/if}">{lang('a-men-17')}</li>
-				<li onClick="SwapTab('setting','on','',6,6);" id="tab_setting_6" class="{if $type==6}on{/if}">{lang('a-fnx-2')}</li>
+				<li onClick="SwapTab('setting','on','',7,1);" id="tab_setting_1" class="{if $type==1}on{/if}">{lang('a-men-65')}</li>
+				<li onClick="SwapTab('setting','on','',7,2);" id="tab_setting_2" class="{if $type==2}on{/if}">{lang('a-men-14')}</li>
+				<li onClick="SwapTab('setting','on','',7,3);" id="tab_setting_3" class="{if $type==3}on{/if}">{lang('a-men-15')}</li>
+				<li onClick="SwapTab('setting','on','',7,4);" id="tab_setting_4" class="{if $type==4}on{/if}">{lang('a-men-16')}</li>
+				<li onClick="SwapTab('setting','on','',7,5);" id="tab_setting_5" class="{if $type==5}on{/if}">{lang('a-men-17')}</li>
+				<li onClick="SwapTab('setting','on','',7,6);" id="tab_setting_6" class="{if $type==6}on{/if}">{lang('a-fnx-2')}</li>
+				<li onClick="SwapTab('setting','on','',7,7);" id="tab_setting_7" class="{if $type==7}on{/if}">{lang('a-fnx-52')}</li>
 			</ul>
 			
 			<div class="contentList pad-10 hidden" id="div_setting_1" style="display: none;">
@@ -238,6 +239,7 @@
 
 			<div class="contentList pad-10 hidden" id="div_setting_5" style="display: none;">
 			<table width="100%" class="table_form">
+				<tbody>
 				<tr>
 					<th width="200">{lang('a-ind-89')}：</th>
 					<td><input class="input-text" type="text" name="data[SITE_KEYWORD_NUMS]" value="{$data['SITE_KEYWORD_NUMS']}" size="10"/>
@@ -281,41 +283,68 @@
 			<!-- FineCMS X 新增设置 -->
 			<div class="contentList pad-10 hidden" id="div_setting_6" style="display: none;">
 			<table width="100%" class="table_form">
-				<tr>
-					<th width="200">{lang('a-fnx-3')}：</th>
-					<td>
-						<input type="radio" {if $data['SITE_FNX_HTML']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_HTML]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
-						<input type="radio" {if empty($data['SITE_FNX_HTML'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_HTML]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
-						<div class="onShow">{lang('a-fnx-7')}</div>
-					</td>
-				</tr>
-				<tr>
-					<th>{lang('a-fnx-4')}：</th>
-					<td>
-						<input type="radio" {if $data['SITE_FNX_MEMBER']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_MEMBER]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
-						<input type="radio" {if empty($data['SITE_FNX_MEMBER'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_MEMBER]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
-						<div class="onShow">{lang('a-fnx-7')}</div>
-					</td>
-				</tr>
-				<tr>
-					<th>{lang('a-fnx-5')}：</th>
-					<td>
-						<input type="radio" {if $data['SITE_FNX_THEME']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_THEME]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
-						<input type="radio" {if empty($data['SITE_FNX_THEME'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_THEME]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
-						<div class="onShow">{lang('a-fnx-7')}</div>
-					</td>
-				</tr>
-				<tr>
-					<th>{lang('a-fnx-6')}：</th>
-					<td>
-						<input type="radio" {if $data['SITE_FNX_PLUGIN']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_PLUGIN]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
-						<input type="radio" {if empty($data['SITE_FNX_PLUGIN'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_PLUGIN]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
-						<div class="onShow">{lang('a-fnx-7')}</div>
-					</td>
-				</tr>
+				<tbody>
+					<tr>
+						<th width="200">{lang('a-fnx-3')}：</th>
+						<td>
+							<input type="radio" {if $data['SITE_FNX_HTML']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_HTML]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
+							<input type="radio" {if empty($data['SITE_FNX_HTML'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_HTML]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
+							<div class="onShow">{lang('a-fnx-7')}</div>
+						</td>
+					</tr>
+					<tr>
+						<th>{lang('a-fnx-4')}：</th>
+						<td>
+							<input type="radio" {if $data['SITE_FNX_MEMBER']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_MEMBER]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
+							<input type="radio" {if empty($data['SITE_FNX_MEMBER'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_MEMBER]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
+							<div class="onShow">{lang('a-fnx-7')}</div>
+						</td>
+					</tr>
+					<tr>
+						<th>{lang('a-fnx-5')}：</th>
+						<td>
+							<input type="radio" {if $data['SITE_FNX_THEME']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_THEME]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
+							<input type="radio" {if empty($data['SITE_FNX_THEME'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_THEME]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
+							<div class="onShow">{lang('a-fnx-7')}</div>
+						</td>
+					</tr>
+					<tr>
+						<th>{lang('a-fnx-6')}：</th>
+						<td>
+							<input type="radio" {if $data['SITE_FNX_PLUGIN']} checked=""{/if} value="true" checkbox="auto" name="data[SITE_FNX_PLUGIN]" /> {lang('a-open')}					&nbsp;&nbsp;&nbsp;
+							<input type="radio" {if empty($data['SITE_FNX_PLUGIN'])} checked=""{/if} value="false" checkbox="auto" name="data[SITE_FNX_PLUGIN]" /> {lang('a-close')} &nbsp;&nbsp;&nbsp;
+							<div class="onShow">{lang('a-fnx-7')}</div>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			</div>
+
+			<!-- FineCMS X 新增 微信微博设置 -->
+			<div class="contentList pad-10 hidden" id="div_setting_7" style="display: none;">
+			<table width="100%" class="table_form">
+					<tr>
+						<th>{lang('a-fnx-53')}： </th>
+						<td><a href="http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html" target="_blank">{lang('a-fnx-54')}</a></td>
+					</tr>
+					<tbody id="sina">
+					<tr>
+						<th>AppID： </th>
+						<td>
+							<input class="input-text" type="text" name="data[SITE_FNX_WXAPPID]" value="{$data['SITE_FNX_WXAPPID']}" size="25"/><div class="onShow">{$string['SITE_FNX_WXAPPID']}</div>
+						</td>
+
+					</tr>
+					<tr>
+						<th>AppSecret： </th>
+						<td>
+							<input class="input-text" type="text" name="data[SITE_FNX_WXAPPSSCRET]" value="{$data['SITE_FNX_WXAPPSSCRET']}" size="50"/><div class="onShow">{$string['SITE_FNX_WXAPPSSCRET']}</div>
+						</td>
+					</tr>
+					</tbody>
+			</table>
+			</div>
+
 
 			<div class="bk15"></div>
 			<input type="submit" class="button" value="{lang('a-submit')}" name="submit">
