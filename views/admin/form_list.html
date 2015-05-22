@@ -29,18 +29,24 @@
 		<form action="" method="post">
 		<input name="form" type="hidden" value="search" />
 		userid：
-		<input type="text" class="input-text" size="5" name="userid" />
+		<input type="text" class="input-text" size="5" id="userid" name="userid" />
 		{lang('a-con-63')}：
 		<select id="stype" name="stype">
 			<option value="0"> ---- </option>
-			{php var_dump($model);}
 			{loop $model['fields']['data'] $t}
 			<option value="{$t['field']}">{$t['name']}</option>
 			{/loop}
 		</select>
 		&nbsp;&nbsp;
-		<input type="text" class="input-text" size="25" name="kw" />
+		<input type="text" id="stype_kw" class="input-text" size="25" name="kw" />
 		<input type="submit" class="button" value="{lang('a-search')}" name="submit" />
+		&nbsp;&nbsp;
+		{lang('a-fnx-55')}：
+		<span id="starttime">{content_date('start_time')}</span>
+		-&nbsp;
+		<span id="endtime">{content_date('end_time')}</span>
+		<input type="hidden" id="fc_modelid" value="{$modelid}" />
+		<input type="button" class="button" value="{lang('a-fnx-56')}" onclick="getdata()" />
 		</form>
 	</div>
 	<div class="bk10"></div>
@@ -103,9 +109,21 @@
 	</div>
 </div>
 <script type="text/javascript">
+var gd_url = "{url('admin/form/getdata')}";
 $(function(){
     window.top.art.dialog({id:'clz'}).close();
 });
+
+function getdata(){
+	var gd_mid = $("#fc_modelid").val();
+	var gd_userid = $("#userid").val();
+	var gd_stype = $("#stype").val();
+	var gd_stype_kw = $("#stype_kw").val();
+	var gd_start_time = $("#fc_start_time").val();
+	var gd_end_time = $("#fc_end_time").val();
+	gd_url = gd_url + "&modelid=" + gd_mid + "&userid=" + gd_userid + "&stype=" + gd_stype + "&stype_kw=" + gd_stype_kw + "&starttime=" + gd_start_time + "&endtime=" + gd_end_time;
+	window.open(gd_url);
+}
 function confirm_del() {
     if (confirm('{lang('a-confirm')}')) { 
 		return true; 

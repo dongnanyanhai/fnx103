@@ -39,6 +39,7 @@ class FormController extends Admin {
 	 * 表单内容管理
 	 */
 	public function listAction() {
+		App::auto_load('fields');
 	    if ($this->post('submit') && $this->post('form') == 'search') {
 	        $kw		= $this->post('kw');
 			$stype	= $this->post('stype');
@@ -336,5 +337,59 @@ class FormController extends Admin {
 		$file = substr(form_show_url($this->modelid, $data), strlen(Controller::get_base_url())); //去掉主域名
 		$file = substr($file, 0, 9) == 'index.php' ? null : $file; //是否为动态链接
 		if ($file && file_exists($file)) @unlink($file);
+	}
+
+	/*
+	 * 导出数据
+	 */
+	public function getdataAction() {
+		$content = lang("a-fnx-57") . ",";
+		foreach ($this->model['fields']['data'] as $val) {
+			# code...
+			$content .= $val['name'] . ",";
+
+		}
+		$content .= "\r\n";
+
+		$userid = isset($_GET['userid']) ? (int)$this->get('userid') : 0;
+		$stype = isset($_GET['stype']) ? $this->get('stype') : "";
+		$kw = isset($_GET['stype_kw']) ? $this->get('stype_kw') : "";
+		$starttime = isset($_GET['starttime']) ? (int)$this->get('starttime') : 0;
+		$endtime = isset($_GET['endtime']) ? (int)$this->get('endtime') : 0;
+		$status   = isset($_GET['status']) ? (int)$this->get('status') : 1;
+		
+		$where = '`status`=' . $status;
+		if($userid) $where .= ' and userid=' . $userid;
+		if($kw && $stype && isset($this->model['fields']['data'][$stype])) $where .= ' and `' . $stype . '` like "%' . $kw . '%"';
+		if($starttime) $where .= ' and inputtime > ' . $starttime;
+		if($endtime) $where .= ' and inputtime < ' . $endtime;
+
+		// echo $stype. "<br>";
+		// echo $kw. "<br>";
+		// echo $where. "<br>";
+		$data = $this->form->where($where)->order(array('inputtime DESC'))->select();
+		//var_dump($data);
+		foreach ($data as $val) {
+			$content .= date("Y-m-d h:i:s",$val['inputtime']) .',';
+			foreach ($this->model['fields']['data'] as $fields) {
+				# code...
+				$content .= $val[$fields['field']] . ',';
+			}
+			$content .= "\r\n";
+		}
+		// Excel打开utf-8文件时出现乱码，必须转换字符串编码
+		// 下面语句解决excel打开乱码的问题：
+		$content = mb_convert_encoding($content,"gb2312","UTF-8"); 
+
+		$filename = APP_ROOT . 'cache' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $this->table .'_data.csv';
+		@unlink($filename);
+		$h = fopen($filename,'w+');
+		if(fwrite($h,$content)){
+			fclose($h);
+			header("Content-type: application/octet-stream");
+			header('Content-Disposition: attachment; filename="' . basename($filename) . '"');
+			header("Content-Length: ". filesize($filename));
+			readfile($filename);
+		}
 	}
 }
