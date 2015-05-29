@@ -9,7 +9,7 @@ return array(
 	'host'     => 'localhost', 
 	'username' => 'root', 
 	'password' => 'qq978868928', 
-	'dbname'   => 'finecmsx', 
+	'dbname'   => 'fnx103', 
 	'prefix'   => 'fnx_', 
 	'charset'  => 'utf8', 
 	'port'     => '', 
