@@ -6,6 +6,6 @@ if (!defined('IN_FINECMS')) exit();
  */
 return array(
 
-	'1'     => 'finecmsx.loveinin.com', 
+	'1'     => 'fnx103.loveinin.com', 
 
 );
