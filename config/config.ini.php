@@ -60,9 +60,9 @@ return array(
 	'SITE_TAG_URLRULE'        => '',  //TAG列表URL规则
 	'SITE_TAG_URL'            => '',  //TAG的URL规则
 	'SITE_FNX_HTML'           => true,  //后台“生成静态”开关
-	'SITE_FNX_MEMBER'         => false,  //后台“会员中心”开关
+	'SITE_FNX_MEMBER'         => true,  //后台“会员中心”开关
 	'SITE_FNX_THEME'          => true,  //后台“模板管理”开关
-	'SITE_FNX_PLUGIN'         => false,  //后台“插件管理”开关
+	'SITE_FNX_PLUGIN'         => true,  //后台“插件管理”开关
 	'SITE_FNX_WXAPPID'        => 'wx94a3e27fe7ef0baf',  //微信JS-SDK AppId
 	'SITE_FNX_WXAPPSSCRET'    => 'ca9551d488125ac866f86a88ba0f1706',  //微信JS-SDK AppSecret
 

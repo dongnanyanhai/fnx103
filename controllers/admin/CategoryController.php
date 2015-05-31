@@ -280,7 +280,7 @@ class CategoryController extends Admin {
 	        		$category[$t['catid']]['url'] = $t['urlpath'];
 	        	}
 	        }
-	        foreach ($cb_data as $cb) {
+	        foreach ($cb_data as $kk => $cb) {
 	        	if($cb['catid'] == $t['catid']){
 				    if ($cb['type']==4){
 				    	$block_link =  string2array($cb['content']);
@@ -293,6 +293,7 @@ class CategoryController extends Admin {
 				    }else{
 				    	$category[$t['catid']][$cb['fieldname']] = $cb['content'];
 				    }
+				    $category[$t['catid']]['ext'][$kk] = $cb['fieldname'];
 	        	}
 	        }
 	    }
@@ -313,7 +314,7 @@ class CategoryController extends Admin {
 	        foreach ($_POST as $var=>$value) {
 	            if (strpos($var, 'del_')!==false) {
 	                $id = (int)str_replace('del_', '', $var);
-	                $this->delAction($id, 1);
+	                $this->cbdelAction($id, 1);
 	            }
 	        }
 			$this->adminMsg($this->getCacheCode('block') . lang('success'), url('admin/category/categoryblock/',array('catid'=>$this->get('catid'))), 3, 1, 1);
@@ -334,6 +335,7 @@ class CategoryController extends Admin {
     }
     
     public function cbaddAction() {
+    	
         if ($this->post('submit')) {
             $data = $this->post('data');
             if (empty($data['type'])) $this->adminMsg(lang('a-blo-3'));
@@ -343,7 +345,20 @@ class CategoryController extends Admin {
 			}else{
 				$data['content'] = $data['content_' . $data['type']];
 			}
-            if (empty($data['name']) || empty($data['content'])) $this->adminMsg(lang('a-blo-4'));
+			// 检查字段名称和内容是否为空
+            if (empty($data['name']) || empty($data['content']) || empty($data['fieldname'])) $this->adminMsg(lang('a-blo-4'));
+            // 检查字段名称是否和栏目字段重复
+            $deffield = array("catid", "site", "typeid", "modelid", "parentid", "arrparentid", "child", "arrchildid", "catname", "image", "content", "meta_title", "meta_keywords", "meta_description", "catdir", "url", "urlpath", "items", "listorder", "ismenu", "categorytpl", "listtpl", "showtpl", "setting", "pagesize","ext");
+            if (in_array($data['fieldname'], $deffield)) $this->adminMsg(lang('a-fnx-58'));
+            // 检查字段名称是否和已有字段重复
+            $cb_data   = $this->category_block->where('site=' . $this->siteid)->where('catid=' . $this->get('catid'))->select();
+            if($cb_data){
+            	foreach ($cb_data as $val) {
+            		if ($data['fieldname'] == $val['fieldname']) $this->adminMsg(lang('a-fnx-59'));
+            		if ($data['name'] == $val['name']) $this->adminMsg(lang('a-fnx-59'));
+            	}
+            }
+
 			$data['site'] = $this->siteid;
 			$data['catid'] = $this->get('catid');
             $this->category_block->insert($data);
