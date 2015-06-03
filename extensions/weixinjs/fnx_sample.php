@@ -23,6 +23,66 @@
      * 邮件主题：【微信JS-SDK反馈】具体问题
      * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
      */
+
+    var imgUrl = '{SITE_URL}{$image}'; //缩略图地址
+    var lineLink = '{$signPackage["url"]}'; //分享的链接地址
+    var descContent = "{$content}"; //摘要信息
+    var shareTitle = '{$cats[$catid]['hnplaytitle']}'; //分享的标题
+    var appid = '{$signPackage["appId"]}'; //你的公众号的APPId
+
+    //分享给朋友
+    function shareFriend() {
+        WeixinJSBridge.invoke('sendAppMessage',{
+            "appid": appid,
+            "img_url": imgUrl,
+            "img_width": "200",  //缩略图的大小，你可以自己修改
+            "img_height": "200", //缩略图的大小，你可以自己修改
+            "link": lineLink,
+            "desc": descContent,
+            "title": window.shareTitle
+        }, function(res) {
+            //分享完成后你想做的事情可以写在这里。
+        })
+    }
+    //分享到朋友圈
+    function shareTimeline() {
+        WeixinJSBridge.invoke('shareTimeline',{
+            "img_url": imgUrl,
+            "img_width": "200", //缩略图的大小，你可以自己修改
+            "img_height": "200", //缩略图的大小，你可以自己修改
+            "link": lineLink,
+            "desc": descContent,
+            "title": window.shareTitle
+        }, function(res) {
+            //分享完成后你想做的事情可以写在这里。
+        });
+    }
+    //分享到企鹅微博
+    function shareWeibo() {
+        WeixinJSBridge.invoke('shareWeibo',{
+            "content": window.shareTitle,
+            "url": lineLink,
+        }, function(res) {
+            //分享完成后你想做的事情可以写在这里。
+        });
+    }
+
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //绑定‘分享给朋友’按钮
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            shareFriend();
+        });
+        //绑定‘分享到朋友圈’按钮
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+            shareTimeline();
+        });
+        //绑定‘分享到微博’按钮
+        WeixinJSBridge.on('menu:share:weibo', function(argv){
+            shareWeibo();
+        });
+    }, false);
+    // 开始设置微信分享！
+
     wx.config({
         debug: true,
         appId: '{$signPackage["appId"]}',
