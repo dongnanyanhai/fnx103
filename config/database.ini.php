@@ -6,10 +6,10 @@ if (!defined('IN_FINECMS')) exit();
  */
 return array(
 
-	'host'     => 'localhost', 
-	'username' => 'root', 
-	'password' => 'qq978868928', 
-	'dbname'   => 'fnx103', 
+	'host'     => MOPAAS_MYSQL27976_HOST, 
+	'username' => MOPAAS_MYSQL27976_USER, 
+	'password' => MOPAAS_MYSQL27976_PASSWORD, 
+	'dbname'   => 'd3488521da32b40f7b3156e6ca834dc22', 
 	'prefix'   => 'fnx_', 
 	'charset'  => 'utf8', 
 	'port'     => '', 
