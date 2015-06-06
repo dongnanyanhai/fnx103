@@ -343,7 +343,9 @@ class FormController extends Admin {
 	 * 导出数据
 	 */
 	public function getdataAction() {
-		$content = lang("a-fnx-57") . ",";
+		// 添加BOM头部，解决Excel下乱码问题
+		// "\xEF\xBB\xBF"
+		$content = "\xEF\xBB\xBF".lang("a-fnx-57") . ",";
 		foreach ($this->model['fields']['data'] as $val) {
 			# code...
 			$content .= $val['name'] . ",";
@@ -377,9 +379,9 @@ class FormController extends Admin {
 			}
 			$content .= "\r\n";
 		}
-		// Excel打开utf-8文件时出现乱码，必须转换字符串编码
+		// Excel打开utf-8文件时出现乱码，必须转换字符串编码——改为采用BOM头部解决
 		// 下面语句解决excel打开乱码的问题：
-		$content = mb_convert_encoding($content,"gb2312","UTF-8"); 
+		// $content = mb_convert_encoding($content,"gb2312","UTF-8");  
 
 		$filename = APP_ROOT . 'cache' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $this->table .'_data.csv';
 		@unlink($filename);
