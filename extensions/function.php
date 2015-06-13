@@ -1389,3 +1389,36 @@ function wxjs($appid="",$appsecret=""){
 		return false;
 	}
 }
+
+// 转换自定义字段中下拉菜单类的数据
+// 输出数组
+// 模版调用代码如下：
+// $m = get_model_data();
+// $d = string2array($m[$cats[$catid]['modelid']]['fields']['data']['quyu']['setting']);
+// $data = format_field_data($d['content']);
+// 返回数组格式如下：
+// array (size=26)
+//   0 => 
+//     array (size=2)
+//       0 => string '云南' (length=6)
+//       1 => string '云南' (length=6)
+//   1 => 
+//     array (size=2)
+//       0 => string '内蒙古' (length=9)
+//       1 => string '内蒙古' (length=9)
+//   2 => 
+//     array (size=2)
+//       0 => string '重庆' (length=6)
+//       1 => string '重庆' (length=6)
+
+function format_field_data($data){
+	$redata = array();
+	if ($data == '') return false;
+
+	$modelsettingcontent = explode("\n",$data);
+	foreach ($modelsettingcontent as $key => $val) {
+		$n = explode("|",trim($val));
+		$redata[$key] = $n;
+	}
+	return $redata;
+}
