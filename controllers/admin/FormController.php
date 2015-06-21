@@ -375,7 +375,11 @@ class FormController extends Admin {
 			$content .= date("Y-m-d h:i:s",$val['inputtime']) .',';
 			foreach ($this->model['fields']['data'] as $fields) {
 				# code...
-				$content .= $val[$fields['field']] . ',';
+				if(is_array(string2array($val[$fields['field']]))){
+					$content .= implode("~",string2array($val[$fields['field']])) . ',';
+				}else{
+					$content .= $val[$fields['field']] . ',';
+				}
 			}
 			$content .= "\r\n";
 		}
