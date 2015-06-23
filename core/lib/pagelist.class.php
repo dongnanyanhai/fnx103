@@ -263,19 +263,19 @@ class pagelist extends Fn_base {
 		//当url为空时,自动获取url参数. 注:默认当前页的参数为page
 		if (is_null($url)) {
 			//当网址没有参数时
-			$url = (!$_SERVER['QUERY_STRING']) ? $_SERVER['REQUEST_URI'] . ((substr($_SERVER['REQUEST_URI'], -1) == '?') ? 'page=' : '?page=') : '';
+			$url = (!$_SERVER['QUERY_STRING']) ? $_SERVER['REQUEST_URI'] . ((substr($_SERVER['REQUEST_URI'], -1) == '?') ? 'page={page}' : '?page={page}') : '';
 			//当网址有参数时,且有分页参数(page)时
-			if (!$url && (stristr($_SERVER['QUERY_STRING'], 'page='))) {								
-				$url = str_ireplace('page=' . $this->page, '', $_SERVER['REQUEST_URI']);
+			if (!$url && (stristr($_SERVER['QUERY_STRING'], 'page={page}'))) {								
+				$url = str_ireplace('page={page}' . $this->page, '', $_SERVER['REQUEST_URI']);
 				$end_str = substr($url, -1);			
 				if ($end_str == '?' || $end_str == '&') {
-					$url .= 'page=';
+					$url .= 'page={page}';
 				} else {
-					$url .= '&page=';
+					$url .= '&page={page}';
 				}
 			}
 			//当网址中未发现含有分页参数(page)时
-			if (!$url) $url = $_SERVER['REQUEST_URI'] . '&page=';
+			if (!$url) $url = $_SERVER['REQUEST_URI'] . '&page={page}';
 		}
 		//自动获取都没获取到url...额..没有办法啦, 趁早返回false
 		if (!$url) return false;
@@ -417,7 +417,7 @@ class pagelist extends Fn_base {
 			$pagelist_output['html'] = $this->preg_c($this->get_note() . $this->get_first_page() . $this->get_list() . $this->get_last_page() , '', $this->config['div']);
 
 			// 新增输出
-			$pagelist_output['url'] = str_replace('{page}', '', $this->url);//连接网址
+			$pagelist_output['url'] = str_replace('{page}', $this->page, $this->url);//连接网址
 			$pagelist_output['page'] = $this->page;               //当前页
 			$pagelist_output['num'] = $this->num;                 //每个页面显示的post数目
 			$pagelist_output['total'] = $this->total;             // 文章总数
