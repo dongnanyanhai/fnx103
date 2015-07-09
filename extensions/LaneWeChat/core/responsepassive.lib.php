@@ -1,5 +1,5 @@
 <?php
-namespace LaneWeChat\Core;
+
 /**
  * 发送被动响应
  * Created by Lane.

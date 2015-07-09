@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat;
 /**
  *
  * 自动载入函数
@@ -11,7 +10,7 @@ namespace LaneWeChat;
  * WebSite: http://www.lanecn.com
  */
 class Autoloader{
-    const NAMESPACE_PREFIX = 'LaneWeChat\\';
+    const NAMESPACE_PREFIX = '';
     /**
      * 向PHP注册在自动载入函数
      */

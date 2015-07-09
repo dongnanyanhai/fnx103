@@ -1,5 +1,5 @@
 <?php
-namespace LaneWeChat\Core;
+
 /**
  * 智能接口
  * User: lane

@@ -1,5 +1,5 @@
 <?php
-namespace LaneWeChat\Core;
+
 /**
  * Created by lixuan-it@360.cn
  * User: lane

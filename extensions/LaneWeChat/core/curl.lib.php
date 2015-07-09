@@ -1,5 +1,5 @@
 <?php
-namespace LaneWeChat\Core;
+
 /**
  *
  * CURL工具
@@ -151,7 +151,7 @@ class Curl {
 		$errno = curl_errno(self::$_ch);
 
 		if ($errno > 0) {
-			throw new \Exception(curl_error(self::$_ch), $errno);
+			throw new Exception(curl_error(self::$_ch), $errno);
 		}
 		return  $response;
 	}

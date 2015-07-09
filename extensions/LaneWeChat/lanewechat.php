@@ -1,6 +1,4 @@
 <?php
-namespace LaneWeChat;
-
 session_start();
 //引入配置文件
 include_once __DIR__.'/config.php';

@@ -1,5 +1,5 @@
 <?php
-namespace LaneWeChat\Core;
+
 /**
  * 微信公众平台来来路认证，处理中心，消息分发
  * Created by Lane.
