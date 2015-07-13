@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 发送主动响应
  * Created by Lane.
